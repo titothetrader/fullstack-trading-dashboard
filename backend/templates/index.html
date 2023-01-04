@@ -1,0 +1,9 @@
+<html>
+    <head>Trading Dashboard</head>
+    <body>
+        {% for stock in stocks %}
+            {{ stock.id }}
+            {{ stock.symbol }}
+        {% endfor %}
+    </body>
+</html>

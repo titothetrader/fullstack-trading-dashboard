@@ -1,0 +1,9 @@
+os
+dotenv
+mysql-connector-python
+alpaca-trade-api
+datetime
+requests
+asyncio
+fastapi
+uvicorn
