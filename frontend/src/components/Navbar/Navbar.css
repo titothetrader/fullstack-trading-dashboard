@@ -1,7 +1,7 @@
 @tailwind components;
 
 @layer components {
-    .nav-title {
-        @apply text-white h-24 pt-8;
+    .nav-bar {
+        @apply text-white h-24 pt-8 text-3xl underline;
     }
 }
