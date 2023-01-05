@@ -59,9 +59,9 @@ def index(request: Request):
     # return{"title": "Dashboard", "stocks": stocks}
     return templates.TemplateResponse("index.html", {"request": request, "stocks": stocks})
 
-@app.get("/getAllStocks")
-def index(request: Request):
+@app.get("/getAllStocks/{limit}")
+def index(request: Request, limit):
     # print(dir(request))
-    stocks = getAllStocks(1)
+    stocks = getAllStocks(limit)
     # return{"title": "Dashboard", "stocks": stocks}
     return stocks

@@ -1,14 +1,12 @@
 import axios from 'axios'
 
 
-export const getStocks = async () => {
+export const getStocks = async (limit) => {
     try {
-        const response = await axios.get("http://127.0.0.1:8000/getAllStocks")
+        const response = await axios.get(`${process.env.REACT_APP_DB_BASE_URL}/${limit}`)
         // console.log(response.data)
         return response.data
     } catch (error) {
         console.log(error)
     }
-    
-    // await axios.get(process.env.DB_BASE_URL)
 }

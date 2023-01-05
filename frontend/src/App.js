@@ -8,7 +8,7 @@ function App() {
 
 
   useEffect(() => {
-    getStocks()
+    getStocks(10)
       .then((data) => {
         setStocks(data)
       })
