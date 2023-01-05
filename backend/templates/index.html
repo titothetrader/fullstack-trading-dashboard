@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Trading Dashboard</title>
+        <link rel="stylesheet" href="./styles.css">
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="text-center">
@@ -8,8 +9,9 @@
             <h1 class="text-3xl underline text-white">Trading Dashboard</h1>
         </div>
         
-        <table class="table-auto mx-auto m-6 bg-slate-800 text-white rounded-xl border-separate border-spacing-2">
-            <thead>
+        <div class="sm:w-full md:w-1/2 lg:w-3/4 mx-auto">
+        <table class="table-auto m-8 bg-slate-700 text-white rounded-xl ">
+            <thead class="h-14">
               <tr>
                 <th>ID</th>
                 <th>Symbol</th>
@@ -18,13 +20,14 @@
             </thead>
             <tbody>
                 {% for stock in stocks %}
-                <tr class="h-12 divide-y divide-slate-500">
+                <tr class="h-12 even:bg-slate-600 odd:bg-slate-500 hover:bg-slate-900 text-center">
                     <td>{{ stock.id }}</td>
                     <td>{{ stock.symbol }}</td>
-                    <td>{{ stock.name }}</td>
+                    <td class="text-left px-3"><a href="">{{ stock.name }}</a></td>
                 </tr>
             {% endfor %}
             </tbody>
           </table>
+        </div>
     </body>
 </html>
