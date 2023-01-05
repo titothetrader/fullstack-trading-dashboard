@@ -1,12 +1,17 @@
-import axios from 'axios'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+const baseURL = process.env.REACT_APP_DB_BASE_URL
 
-export const getStocks = async (limit) => {
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_DB_BASE_URL}/${limit}`)
-        // console.log(response.data)
-        return response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
+export const stocksApi = createApi({
+    reducerPath: 'stocksApi',
+    baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+    endpoints: (builder) => ({
+        getStocks: builder.query({
+            query: (limit) => `/getAllStocks/${limit}`
+        })
+    })
+})
+
+export const {
+    useGetStocksQuery,
+} = stocksApi

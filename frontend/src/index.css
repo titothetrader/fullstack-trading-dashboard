@@ -1,3 +1,8 @@
+@import "./global-styles/Responsive.css";
+@import "./global-styles/Text.css";
+@import "./components/Navbar/Navbar.css";
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,4 +14,3 @@
     @apply bg-slate-900;
   }
 }
-
