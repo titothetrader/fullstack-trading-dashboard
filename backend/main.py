@@ -62,7 +62,6 @@ def getStockDetails(symbol):
         "details": details,
         "prices": prices
     }
-    print(results)
     return results
 
 
