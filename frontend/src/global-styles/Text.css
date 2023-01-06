@@ -1,7 +1,14 @@
+@tailwind base;
 @tailwind components;
 
-@layer components {
-    /* body {
-      @apply bg-slate-900;
-    } */
+@layer base {
+    body {
+      @apply text-slate-200;
+    }
+  }
+
+  @layer components {
+    .link {
+      @apply text-sky-600 hover:text-sky-400 !important;
+    }
   }

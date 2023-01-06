@@ -3,15 +3,18 @@ import { Link } from 'react-router-dom'
 const Navbar = () => {
     return (
         <div className="nav-bar">
-                <div className='flex'>
-                    <img src="#"/>
+                <div className='flex float-left'>
+                    <img 
+                        src={require("../../assets/images/Tensai-logo-horizontal-digital.png")}
+                        className="w-2/12 ml-10"    
+                    />
                 </div>
-            <div className=''>
+            <div className='flex justify-end mr-10'>
                 <ul className='flex justify-end mb-2'>
                     <li className="mr-6"><Link to="/">Home</Link></li>
-                    <li className="mr-6"><Link to="/crypto">Crypto</Link></li>
-                    <li className="mr-6"><Link to="/fx">Forex</Link></li>
                     <li className="mr-6"><Link to="/stocks">Stocks</Link></li>
+                    <li className="mr-6"><Link to="/crypto">Crypto</Link></li>
+                    <li className=""><Link to="/forex">Forex</Link></li>
                 </ul>
             </div>
         </div>

@@ -1,0 +1,5 @@
+export { default as Home } from './Home/Home'
+export { default as Stocks } from './Stocks/Stocks'
+export { default as StockDetails } from './Stocks/StockDetails'
+export { default as Crypto } from './Crypto/Crypto'
+export { default as Forex } from './Forex/Forex'

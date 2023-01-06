@@ -8,10 +8,14 @@ export const stocksApi = createApi({
     endpoints: (builder) => ({
         getStocks: builder.query({
             query: (limit) => `/getAllStocks/${limit}`
-        })
+        }),
+        getStockDetails: builder.query({
+            query: (symbol) => `/getStockDetails/${symbol}`
+            // query: (id) => `getStockDetails/${id}`
+        }),
     })
 })
 
 export const {
-    useGetStocksQuery,
+    useGetStocksQuery, useGetStockDetailsQuery,
 } = stocksApi

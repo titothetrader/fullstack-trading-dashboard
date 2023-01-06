@@ -14,7 +14,7 @@ load_dotenv()
 app = FastAPI()
 
 # Load FastAPI CORS
-origins = ['https://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:3000']
+origins = ['https://localhost:8000', 'http://127.0.0.1:8000', 'http://localhost:3000', '*:*']
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -49,7 +49,21 @@ def getAllStocks(limit = 100):
     sql = "SELECT * from stock LIMIT " + str(limit)
     cursor.execute(sql)
     records = cursor.fetchall()
-    return records    
+    return records
+
+def getStockDetails(symbol):
+    sql_details = "SELECT * from stock WHERE symbol = '" + str(symbol) + "'"
+    cursor.execute(sql_details)
+    details = cursor.fetchall()
+    sql_prices = "SELECT stock_price.id, symbol, name, date, high, open, low, close, volume from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE symbol = '" + str(symbol) + "' ORDER BY stock_price.date"
+    cursor.execute(sql_prices)
+    prices = cursor.fetchall()
+    results = {
+        "details": details,
+        "prices": prices
+    }
+    print(results)
+    return results
 
 
 # Load FastAPI Routes
@@ -65,3 +79,8 @@ def index(request: Request, limit):
     stocks = getAllStocks(limit)
     # return{"title": "Dashboard", "stocks": stocks}
     return stocks
+
+@app.get("/getStockDetails/{symbol}")
+def index(request: Request, symbol):
+    stock = getStockDetails(symbol)
+    return stock
