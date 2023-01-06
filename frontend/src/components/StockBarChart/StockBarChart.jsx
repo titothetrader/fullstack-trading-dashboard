@@ -33,6 +33,10 @@ import { Chart } from "react-google-charts";
     vAxis: {title: 'Cups'},
     hAxis: {title: 'Month'},
     seriesType: "candlesticks",
+    candlestick: {
+        fallingColor: { strokeWidth: 0, fill: "red" }, // red
+        risingColor: { strokeWidth: 0, fill: "green" }, // green
+        },
     series: {
         1: { type: "line",
              curveType: "function" },
