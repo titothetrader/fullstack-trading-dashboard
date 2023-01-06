@@ -26,11 +26,10 @@ const StockDetails = () => {
 
 
   return (
-    <div>
-      <h1 className='text-2xl h-24 underline bold'>Stock Details</h1>
-      <div>{stockDetails?.id}</div>
-      <div>{stockDetails?.symbol}</div>
-      <div>{stockDetails?.name}</div>
+    <div className='mt-6'>
+      <h1 className='text-2xl h-16 underline bold'>
+        Stock Details {'>>'} {stockDetails?.symbol} {'>>'} {stockDetails?.name}
+      </h1>
         {!isFetching && stockPrices &&
           <StockBarChart prices={stockPrices} />
         }

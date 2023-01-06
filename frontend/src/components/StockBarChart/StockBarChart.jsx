@@ -40,7 +40,8 @@ import { Chart } from "react-google-charts";
     series: {
         1: { type: "line",
              curveType: "function" },
-        2: { type: "bars" }
+        2: { type: "bars",
+           }
       }
   };
 
@@ -57,12 +58,21 @@ const StockBarChart = (props) => {
             array.push([bar.date, bar.low, bar.open, bar.close, bar.high])
             averages.push([bar.date, bar.close > bar.open ? 
                                      bar.close / bar.open : bar.open / bar.close])
-            comboArray.push([bar.date, bar.low, bar.open, bar.close, bar.high, ((bar.close+bar.open)/2), (bar.volume/1000000)])
+            comboArray.push([bar.date, bar.low, bar.open, bar.close, bar.high, ((bar.close+bar.open)/(2)), (bar.volume / 1000000)])
           })
         setPriceData(array)
         setPriceAvg(averages)
         setComboArray(comboArray)
     }, [props.prices])
+
+    const loader = (
+        <div className='w-full text-center'>
+            <img 
+                className="w-1/12 mx-auto"  
+                src={require("../../assets/images/Tensai-logo-symbol-anim.gif")}  
+            />
+        </div>
+    )
 
   return (
     <div className=''>
@@ -74,7 +84,7 @@ const StockBarChart = (props) => {
                     height="400px"
                     data={comboArray}
                     options={comboOptions}
-                    loader={<div>Loading Chart</div>}
+                    loader={loader}
                 />
             <Chart
                     chartType="CandlestickChart"
@@ -82,13 +92,13 @@ const StockBarChart = (props) => {
                     height="400px"
                     data={priceData}
                     options={chartOptions}
-                    loader={<div>Loading Chart</div>}
+                    loader={loader}
                 />
                 <Chart 
                     chartType='LineChart'
                     data={priceAvg}
                     options={lineOptions}
-                    loader={<div>Loading Chart</div>}
+                    loader={loader}
                 />
           </div>
         </div>
