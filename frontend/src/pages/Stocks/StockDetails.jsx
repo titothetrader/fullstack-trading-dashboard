@@ -31,6 +31,20 @@ const StockDetails = () => {
         Stock Details: {stockDetails?.exchange} {'>>'} {stockDetails?.symbol} {'>>'} {stockDetails?.name}
       </h1>
       <h2>{stockDetails?.status} | {stockDetails?.tradable}</h2>
+      <div className='columns-2'>
+        <div>
+          
+        </div>
+        <div>
+
+        </div>
+      </div>
+      <div>
+        {Object.keys(stockDetails).map((key, index) => (
+          <p key={index}>Key: {key} Value: {stockDetails[key]}</p>
+        ))}
+        {stockDetails?.description}
+      </div>
         {!isFetching && stockPrices &&
           <StockBarChart prices={stockPrices} />
         }

@@ -54,7 +54,12 @@ except Error as e:
     print("Error while connecting to MySQL", e)
     
 # DB FUNCTIONS - get existing stocks in DB
-sql = "SELECT * from stock ORDER BY symbol"
+
+# Get all symbols in stock alphabetically
+# sql = "SELECT * from stock ORDER BY symbol"
+
+# Get unique symbols that have price joined by stock id
+sql = "select distinct symbol from stock_price JOIN stock on stock_price.stock_id = stock.id;"
 cursor.execute(sql)
 records = cursor.fetchall()
 existingSymbols = [row['symbol'] for row in records]

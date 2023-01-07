@@ -3,7 +3,12 @@ from dotenv import load_dotenv
 from mysql.connector import Error
 import mysql.connector
 import alpaca_trade_api as tradeapi
+import datetime
 
+# ct stores current time
+ct = datetime.datetime.now()
+
+# load dotEnv
 load_dotenv()
 
 # Connect to PlanetScale DB
@@ -58,7 +63,7 @@ def get_stocks_bars(symbols):
         if bar.S in symbols:
             if bar.S != prevSymbol:
                 prevSymbol = bar.S
-                print(f"Processing bars for {bar.S}")
+                print(f"{ct}: Processing bars for {bar.S}")
             insertPrices(bar.S, bar.t, bar.h, bar.o, bar.l, bar.c, bar.v)
     connection.commit()
 
