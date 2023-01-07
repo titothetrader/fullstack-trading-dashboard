@@ -3,6 +3,8 @@ import millify from 'millify'
 
 import { Chart } from "react-google-charts";
 
+import { LoadingSpinner } from '..';
+
 
   export const chartOptions = {
     legend: "none",
@@ -65,14 +67,6 @@ const StockBarChart = (props) => {
         setComboArray(comboArray)
     }, [props.prices])
 
-    const loader = (
-        <div className='w-full text-center'>
-            <img 
-                className="w-1/12 mx-auto"  
-                src={require("../../assets/images/Tensai-logo-symbol-anim.gif")}  
-            />
-        </div>
-    )
 
   return (
     <div className=''>
@@ -84,7 +78,7 @@ const StockBarChart = (props) => {
                     height="400px"
                     data={comboArray}
                     options={comboOptions}
-                    loader={loader}
+                    loader={<LoadingSpinner />}
                 />
             <Chart
                     chartType="CandlestickChart"
@@ -92,13 +86,13 @@ const StockBarChart = (props) => {
                     height="400px"
                     data={priceData}
                     options={chartOptions}
-                    loader={loader}
+                    loader={<LoadingSpinner />}
                 />
                 <Chart 
                     chartType='LineChart'
                     data={priceAvg}
                     options={lineOptions}
-                    loader={loader}
+                    loader={<LoadingSpinner />}
                 />
           </div>
         </div>

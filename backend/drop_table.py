@@ -21,8 +21,8 @@ except Error as e:
     
 ### DATABASE FUNCTIONS
 def emptyTable(db_table):
-    empty_db = "TRUNCATE TABLE " + str(db_table)
-    print("Emptying table: " + str(db_table))
+    empty_db = "DROP TABLE IF EXISTS " + str(db_table)
+    print("Dropping table: " + str(db_table))
     cursor.execute(empty_db)
     connection.commit()
 
