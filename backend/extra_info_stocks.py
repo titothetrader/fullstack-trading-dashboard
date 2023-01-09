@@ -37,7 +37,7 @@ stockData = {
     "200DayMovingAverage": 0,
 }
 
-avLabels = ['Description', 'Currency', 'Country', 'Sector', 'Industry', 'MarketCapitalization', 'PERatio', 'DividendPerShare', 'DividendYield', 'EPS', 'RevenueTTM', 'GrossProfitTTM', 'Beta', '52WeekHigh', '52WeekLow', '50DayMovingAverage', '200DayMovingAverage', 'DividendDate' ]
+avLabels = ["AssetType", "Description", "CIK", "Currency", "Country", "Sector", "Industry", "Address", "FiscalYearEnd", "LatestQuarter", "MarketCapitalization", "EBITDA", "PERatio", "PEGRatio", "BookValue", "DividendPerShare", "DividendYield", "EPS", "RevenuePerShareTTM", "ProfitMargin", "OperatingMarginTTM", "ReturnOnAssetsTTM", "ReturnOnEquityTTM", "RevenueTTM", "GrossProfitTTM", "DilutedEPSTTM", "QuarterlyEarningsGrowthYOY", "QuarterlyRevenueGrowthYOY", "AnalystTargetPrice", "TrailingPE", "ForwardPE", "PriceToSalesRatioTTM", "PriceToBookRatio", "EVToRevenue", "EVToEBITDA", "Beta", "52WeekHigh", "52WeekLow", "50DayMovingAverage", "200DayMovingAverage", "SharesOutstanding", "DividendDate", "ExDividendDate"]
 
 # Connect to PlanetScale DB
 connection = mysql.connector.connect(
@@ -56,24 +56,22 @@ except Error as e:
 # DB FUNCTIONS - get existing stocks in DB
 
 # Get all symbols in stock alphabetically
-# sql = "SELECT * from stock ORDER BY symbol"
+sql = "SELECT * from stock ORDER BY symbol"
 
 # Get unique symbols that have price joined by stock id
-sql = "select distinct symbol from stock_price JOIN stock on stock_price.stock_id = stock.id;"
+# sql = "SELECT DISTINCT symbol FROM stock_price JOIN stock ON stock_price.stock_id = stock.id WHERE stock.description = ''"
+
 cursor.execute(sql)
 records = cursor.fetchall()
 existingSymbols = [row['symbol'] for row in records]
 # print(existingSymbols)
 
-# def updateStock(symbol, description, currency, country, logo_url, company_url, sector, industry, market_cap, dividend_share, dividend_yield, dividend_date, eps, beta, pe_ratio, revenue_ttm, gross_profit_ttm, year_week_high, year_week_low, fifty_ma, two_hun_ma):
-def updateStock(symbol, description, currency, country, logo_url, company_url, sector, industry, market_cap, dividend_share, dividend_yield, dividend_date, eps, beta, pe_ratio, revenue_ttm, gross_profit_ttm, year_week_high, year_week_low, fifty_ma, two_hun_ma):
-    insert_stmt = "UPDATE IGNORE stock SET description = %s, currency = %s, country = %s, logo_url = %s, company_url = %s, sector = %s, industry = %s, market_cap = %s, dividend_share = %s, dividend_yield = %s, dividend_date = %s, eps = %s, beta = %s, pe_ratio = %s, revenue_ttm = %s, gross_profit_ttm = %s, year_week_high = %s, year_week_low = %s, fifty_ma = %s, two_hun_ma = %s WHERE symbol = %s"
+def updateStock(symbol, asset_type, description, cik, currency, country, sector, industry, address, fiscal_year_end, latest_quarter, market_cap, ebitda, pe_ratio, peg_ratio, book_value, dividend_per_share, dividend_yield, eps, revenue_per_share_ttm, profit_margin, operating_margin_ttm, return_on_assets_ttm, return_on_equity_ttm, revenue_ttm, gross_profit_ttm, diluted_eps_ttm, q_earnings_growth_yoy, q_revenue_growth_yoy, analyst_target_price, trailing_pe, forward_pe, price_to_sale_ratio_ttm, price_to_book_ratio, ev_to_revenue, ev_to_ebitda, beta, year_week_high, year_week_low, fifty_ma, two_hun_ma, shares_outstanding, dividend_date, ex_dividend_date):
+    insert_stmt = "UPDATE IGNORE stock SET asset_type = %s, description = %s, cik = %s, currency = %s, country = %s, sector = %s, industry = %s, address = %s, fiscal_year_end = %s, latest_quarter = %s, market_cap = %s, ebitda = %s, pe_ratio = %s, peg_ratio = %s, book_value = %s, dividend_per_share = %s, dividend_yield = %s, eps = %s, revenue_per_share_ttm = %s, profit_margin = %s, operating_margin_ttm = %s, return_on_assets_ttm = %s, return_on_equity_ttm = %s, revenue_ttm = %s, gross_profit_ttm = %s, diluted_eps_ttm = %s, q_earnings_growth_yoy = %s, q_revenue_growth_yoy = %s, analyst_target_price = %s, trailing_pe = %s, forward_pe = %s, price_to_sale_ratio_ttm = %s, price_to_book_ratio = %s, ev_to_revenue = %s, ev_to_ebitda = %s, beta = %s, year_week_high = %s, year_week_low = %s, fifty_ma = %s, two_hun_ma = %s, shares_outstanding = %s, dividend_date = %s, ex_dividend_date = %s WHERE symbol = %s"
         
-    data = (description, currency, country, logo_url, company_url, sector, industry, market_cap, dividend_share, dividend_yield, dividend_date, eps, beta, pe_ratio, revenue_ttm, gross_profit_ttm, year_week_high, year_week_low, fifty_ma, two_hun_ma, symbol)
+    data = (asset_type, description, cik, currency, country, sector, industry, address, fiscal_year_end, latest_quarter, market_cap, ebitda, pe_ratio, peg_ratio, book_value, dividend_per_share, dividend_yield, eps, revenue_per_share_ttm, profit_margin, operating_margin_ttm, return_on_assets_ttm, return_on_equity_ttm, revenue_ttm, gross_profit_ttm, diluted_eps_ttm, q_earnings_growth_yoy, q_revenue_growth_yoy, analyst_target_price, trailing_pe, forward_pe, price_to_sale_ratio_ttm, price_to_book_ratio, ev_to_revenue, ev_to_ebitda, beta, year_week_high, year_week_low, fifty_ma, two_hun_ma, shares_outstanding, dividend_date, ex_dividend_date, symbol)
     
-    # data = (description, currency, country, logo_url, company_url, sector, industry, market_cap, dividend_share, dividend_yield, dividend_date, eps, beta, pe_ratio, revenue_ttm, gross_profit_ttm, year_week_high, year_week_low, fifty_ma, two_hun_ma)
-    
-    # print(description, currency, country, logo_url, company_url, sector, industry, market_cap, dividend_share, dividend_yield, dividend_date, eps, beta, pe_ratio, revenue_ttm, gross_profit_ttm, year_week_high, year_week_low, fifty_ma, two_hun_ma)
+
     cursor.execute(insert_stmt, data)
     print(str(ct)+": " + symbol + " details updated! (i.e. " + sector + ")")
     connection.commit()
@@ -100,7 +98,7 @@ def getAlphaVantageInfo(symbol):
             # print(key)
             stockData[key] = avAsset[key]
                
-    updateStock(symbol, stockData["Description"],  stockData["Currency"], stockData["Country"], 'image_url', 'company_url', stockData["Sector"], stockData["Industry"], stockData["MarketCapitalization"], stockData["DividendPerShare"], stockData["DividendYield"], stockData["DividendDate"], stockData["EPS"], stockData["Beta"], stockData["PERatio"], stockData["RevenueTTM"], stockData["GrossProfitTTM"], stockData["52WeekHigh"], stockData["52WeekLow"], stockData["50DayMovingAverage"], stockData["200DayMovingAverage"])
+    updateStock(symbol, stockData["AssetType"], stockData["Description"], stockData["CIK"], stockData["Currency"], stockData["Country"], stockData["Sector"], stockData["Industry"], stockData["Address"], stockData["FiscalYearEnd"], stockData["LatestQuarter"], stockData["MarketCapitalization"], stockData["EBITDA"], stockData["PERatio"], stockData["PEGRatio"], stockData["BookValue"], stockData["DividendPerShare"], stockData["DividendYield"], stockData["EPS"], stockData["RevenuePerShareTTM"], stockData["ProfitMargin"], stockData["OperatingMarginTTM"], stockData["ReturnOnAssetsTTM"], stockData["ReturnOnEquityTTM"], stockData["RevenueTTM"], stockData["GrossProfitTTM"], stockData["DilutedEPSTTM"], stockData["QuarterlyEarningsGrowthYOY"], stockData["QuarterlyRevenueGrowthYOY"], stockData["AnalystTargetPrice"], stockData["TrailingPE"], stockData["ForwardPE"], stockData["PriceToSalesRatioTTM"], stockData["PriceToBookRatio"], stockData["EVToRevenue"], stockData["EVToEBITDA"], stockData["Beta"], stockData["52WeekHigh"], stockData["52WeekLow"], stockData["50DayMovingAverage"], stockData["200DayMovingAverage"], stockData["SharesOutstanding"], stockData["DividendDate"], stockData["ExDividendDate"])
     
     return stockData
 

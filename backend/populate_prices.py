@@ -36,7 +36,7 @@ symbols = []
 stock_dict = {}
 
 # DB FUNCTIONS - get all symbols
-sql = "SELECT * from stock"
+sql = "SELECT DISTINCT * from stock"
 cursor.execute(sql)
 records = cursor.fetchall()
 for row in records:

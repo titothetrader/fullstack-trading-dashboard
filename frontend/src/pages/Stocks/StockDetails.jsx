@@ -13,6 +13,8 @@ const StockDetails = () => {
   const [stockPrices, setStockPrices] = useState()
 
   const { data, isFetching } = useGetStockDetailsQuery(stockSymbol)
+
+  const detailLabels = []
   
   useEffect(() => {
     setStockDetails(data?.details?.[0])
@@ -30,20 +32,15 @@ const StockDetails = () => {
       <h1 className='text-2xl h-16 underline bold'>
         Stock Details: {stockDetails?.exchange} {'>>'} {stockDetails?.symbol} {'>>'} {stockDetails?.name}
       </h1>
-      <h2>{stockDetails?.status} | {stockDetails?.tradable}</h2>
-      <div className='columns-2'>
-        <div>
-          
-        </div>
-        <div>
-
-        </div>
-      </div>
-      <div>
-        {Object.keys(stockDetails).map((key, index) => (
-          <p key={index}>Key: {key} Value: {stockDetails[key]}</p>
+      <div className='my-8'>
+        {stockDetails && Object.keys(stockDetails).map((key, i) => (
+          <div key={i}>
+            <div>
+              
+            </div>
+            <p>{key}: {stockDetails[key]}</p>
+          </div>
         ))}
-        {stockDetails?.description}
       </div>
         {!isFetching && stockPrices &&
           <StockBarChart prices={stockPrices} />

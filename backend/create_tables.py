@@ -22,7 +22,7 @@ except Error as e:
     
 # DB FUNCTIONS - create tables
 def createTables():
-    sqlTableStock = "CREATE TABLE IF NOT EXISTS stock (id int NOT NULL AUTO_INCREMENT, symbol varchar(255) NOT NULL, name varchar(255) NOT NULL, description varchar(1064) NOT NULL, status varchar(255) NOT NULL, tradable varchar(255) NOT NULL, exchange varchar(255) NOT NULL, currency varchar(255), country varchar(255), logo_url varchar(255), company_url varchar(255), sector varchar(255), industry varchar(255), market_cap float, dividend_share float, dividend_yield float, dividend_date varchar(255), eps float, beta float, pe_ratio float, revenue_ttm float, gross_profit_ttm float, year_week_high float, year_week_low float, fifty_ma float, two_hun_ma float, PRIMARY KEY (id), UNIQUE KEY symbol (symbol))"
+    sqlTableStock = "CREATE TABLE IF NOT EXISTS stock (id int NOT NULL AUTO_INCREMENT, symbol varchar(255) NOT NULL, name varchar(255) NOT NULL, exchange varchar(255) NOT NULL, category varchar(255) NOT NULL, status varchar(255) NOT NULL, tradable varchar(255) NOT NULL, marginable varchar(255) NOT NULL, maintenance_margin_requirement varchar(255) NOT NULL, shortable varchar(255) NOT NULL, easy_to_borrow varchar(255) NOT NULL, fractionable varchar(255) NOT NULL, logo_url varchar(255), company_url varchar(255), asset_type varchar(255) NOT NULL, description Varchar(1064), cik varchar(255), currency varchar(255), country varchar(255), sector varchar(255), industry varchar(255), address varchar(255), fiscal_year_end varchar(255), latest_quarter date, market_cap float, ebitda float, pe_ratio float, peg_ratio float, book_value float, dividend_per_share float, dividend_yield float, eps float, revenue_per_share_ttm float, profit_margin float, operating_margin_ttm float, return_on_assets_ttm float, return_on_equity_ttm float, revenue_ttm float, gross_profit_ttm float, diluted_eps_ttm float, q_earnings_growth_yoy float, q_revenue_growth_yoy float, analyst_target_price float, trailing_pe float, forward_pe float, price_to_sale_ratio_ttm float, price_to_book_ratio float, ev_to_revenue float, ev_to_ebitda float, beta float, year_week_high float, year_week_low float, fifty_ma float, two_hun_ma float, shares_outstanding float, dividend_date date, ex_dividend_date date, PRIMARY KEY (id), UNIQUE KEY symbol (symbol))"
     print("Creating table: stock")
     cursor.execute(sqlTableStock)
     connection.commit()
@@ -32,9 +32,9 @@ def createTables():
     cursor.execute(sqlTablePrices)
     connection.commit()
     
-    # sqlTableCrypto = "CREATE TABLE IF NOT EXISTS crypto (id int NOT NULL AUTO_INCREMENT, symbol varchar(255) NOT NULL, name varchar(255) NOT NULL, description varchar(255) NOT NULL, exchange varchar(255) NOT NULL, currency varchar(255) NOT NULL, country varchar(255) NOT NULL, logo_url varchar(255) NOT NULL, category varchar(255) NOT NULL, sector varchar(255) NOT NULL, industry varchar(255) NOT NULL, market_cap varchar(255) NOT NULL, dividend_share varchar(255) NOT NULL, dividend_yield varchar(255) NOT NULL, dividend_rate varchar(255) NOT NULL, eps varchar(255) NOT NULL, beta varchar(255) NOT NULL, pe_ratio varchar(255) NOT NULL, year_week_high varchar(255) NOT NULL, year_week_low varchar(255) NOT NULL, PRIMARY KEY (id), UNIQUE KEY symbol (symbol))"
-    # print("Creating table: stock")
-    # cursor.execute(sqlTableStock)
-    # connection.commit()
+    sqlTableCryptoTrade = "CREATE TABLE IF NOT EXISTS crypto_trade (id int NOT NULL AUTO_INCREMENT, symbol varchar(255) NOT NULL, name varchar(255) NOT NULL, exchange varchar(255) NOT NULL, category varchar(255) NOT NULL, status varchar(255) NOT NULL, tradable varchar(255) NOT NULL, marginable varchar(255) NOT NULL, maintenance_margin_requirement varchar(255) NOT NULL, shortable varchar(255) NOT NULL, easy_to_borrow varchar(255) NOT NULL, fractionable varchar(255) NOT NULL, PRIMARY KEY (id), UNIQUE KEY symbol (symbol))"
+    print("Creating table: crypto_trade")
+    cursor.execute(sqlTableStock)
+    connection.commit()
     
 createTables()

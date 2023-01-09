@@ -26,7 +26,7 @@ const Stocks = (props) => {
     return (
     <div className='responsive-container rounded-2xl'>
         <h1 className="text-3xl underlie">Stocks</h1>
-        <table className="text-2xl rounded-2xl">
+        <table className="text-2xl rounded-2xl mx-auto">
           <thead>
           <tr>
             <th>ID</th>
