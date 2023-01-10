@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="text-center">
-      <header className="bg-blue-400">
+      <header className="">
         <Navbar />
       </header>
       <div>

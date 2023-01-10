@@ -47,4 +47,9 @@ def createTables():
     cursor.execute(sqlTableExchanges)
     connection.commit()
     
+    sqlTableForex = "CREATE TABLE IF NOT EXISTS forex (id int NOT NULL AUTO_INCREMENT, forex_pair varchar(255) NOT NULL, pair_type varchar(255), description varchar(1064), pairs_correlate varchar(255), pair_a varchar(255), pair_b varchar(255), country_a varchar(255), country_b varchar(255), central_bank_a varchar(255), central_bank_b varchar(255), nickname_a varchar(255), nickname_b varchar(255), PRIMARY KEY (id), UNIQUE KEY forex_pair (forex_pair))"
+    print("Creating table: forex")
+    cursor.execute(sqlTableForex)
+    connection.commit()
+    
 createTables()

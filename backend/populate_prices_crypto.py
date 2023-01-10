@@ -125,7 +125,7 @@ def get_stocks_bars(symbols):
             if symbol in symbols:
                 if symbol != prevSymbol:
                     prevSymbol = symbol
-                    print(f"{ct}: Processing bars for {symbol} from {date} to {today}")  
+                    print(f"{ct}: Processing bars for crypto {symbol} from {date} to {today}")  
                     # print(date, high, open, low, close, volume, vwap, alltime_high, alltime_low)
                 insertPrices(symbol, date, high, open, low, close, volume, vwap, alltime_high, alltime_low)
     connection.commit()

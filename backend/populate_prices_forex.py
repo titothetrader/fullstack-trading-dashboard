@@ -26,4 +26,8 @@ def getOandaInfo(symbol):
     oandaAsset = response.json()
     print(oandaAsset)
     
-getOandaInfo("EUR_USD")
+oanda_pairs = os.getenv("OANDA_PAIRS")
+oanda_pairs = oanda_pairs.split(',')
+for pair in oanda_pairs:
+    print(pair)
+    getOandaInfo(pair)
