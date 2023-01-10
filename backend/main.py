@@ -56,7 +56,7 @@ def getStockDetails(symbol):
     sql_details = "SELECT * from stock WHERE symbol = '" + str(symbol) + "'"
     cursor.execute(sql_details)
     details = cursor.fetchall()
-    sql_prices = "SELECT stock_price.id, symbol, name, date, high, open, low, close, volume from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE symbol = '" + str(symbol) + "' ORDER BY stock_price.date"
+    sql_prices = "SELECT * from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE symbol = '" + str(symbol) + "' ORDER BY stock_price.date"
     cursor.execute(sql_prices)
     prices = cursor.fetchall()
     results = {
@@ -73,7 +73,7 @@ def getAllCryptos(limit = 100):
     return records
 
 def getCryptoDetails(symbol):
-    print("getCryptoDetails")
+    # print("getCryptoDetails")
     sql_details = "SELECT * from crypto_trade WHERE symbol = '" + str(symbol) + "'"
     cursor.execute(sql_details)
     details = cursor.fetchall()
@@ -85,6 +85,21 @@ def getCryptoDetails(symbol):
         "prices": prices
     }
     return results
+
+## CRYPTO EXCHANGES
+def getAllCryptoExchanges(limit = 100):
+    sql = "SELECT * FROM crypto_exchange LIMIT " + str(limit)
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    # print(records)
+    return records
+
+def getCryptoExchangeDetails(exchange_id):
+    sql = f"SELECT * FROM crypto_exchange WHERE coingecko_id = '{exchange_id}'"
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    # print(records)
+    return records
 
 
 # Load FastAPI Routes
@@ -116,7 +131,17 @@ def index(request: Request, limit):
 @app.get("/getCryptoDetails/{symbol}")
 def index(request: Request, symbol):
     symbol = symbol.replace("-", "/")
-    print(symbol)
     cryptos = getCryptoDetails(symbol)
-    print(cryptos)
+    # print(cryptos)
     return cryptos
+
+@app.get("/getAllCryptoExchanges/{limit}")
+def index(request: Request, limit):
+    exchanges = getAllCryptoExchanges(limit)
+    return exchanges
+
+@app.get("/getCryptoExchangeDetails/{exchange_id}")
+def index(request: Request, exchange_id):
+    exchange = getCryptoExchangeDetails(exchange_id)
+    # print(cryptos)
+    return exchange

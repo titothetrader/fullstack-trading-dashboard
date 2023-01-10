@@ -42,4 +42,9 @@ def createTables():
     cursor.execute(sqlTableCryptoPrices)
     connection.commit()
     
+    sqlTableExchanges = "CREATE TABLE IF NOT EXISTS crypto_exchange (id int NOT NULL AUTO_INCREMENT, coingecko_id varchar(255) NOT NULL, name varchar(255) NOT NULL, year_established varchar(255) NOT NULL, country varchar(255) NOT NULL, description Varchar(1064), exchange_url varchar(255) NOT NULL, image_url varchar(255) NOT NULL, has_trading_incentive varchar(255) NOT NULL, trust_score float, trust_score_rank float, trade_volume_24h_btc float, trade_volume_24h_btc_normalized float, PRIMARY KEY (id), UNIQUE KEY coingecko_id (coingecko_id))"
+    print("Creating table: crypto_exchanges")
+    cursor.execute(sqlTableExchanges)
+    connection.commit()
+    
 createTables()

@@ -113,9 +113,6 @@ def getAlphaVantageInfo(symbol):
     response = requests.get(url = av_url, params = params)
     avAsset = response.json()
     # print(avAsset.keys())
-    d_avAsset = avAsset.items()
-    val_avAsset = avAsset.values()
-    # print(val_avAsset)
     for key in avAsset:
         # print(key, '->', avAsset[key])
         if key in avLabels:

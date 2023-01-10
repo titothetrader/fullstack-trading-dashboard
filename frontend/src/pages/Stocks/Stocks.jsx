@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { getStocks } from '../../services/stocksAPIaxios'
 import { useGetStocksQuery } from '../../services/stocksAPI';
 
-const Stocks = (props) => {
+const Stocks = () => {
     const [stocks, setStocks] = useState()
 
     // REDUX TOOLKIT CALL

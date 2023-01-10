@@ -40,7 +40,7 @@ stock_dict = {}
 
 # DB FUNCTIONS - get all symbols
 # sql = "SELECT DISTINCT * from stock ORDER BY symbol DESC"
-sql = "SELECT DISTINCT symbol, id FROM stock WHERE id not in (select id from stock_price) ORDER BY symbol ASC"
+sql = "SELECT DISTINCT symbol, id FROM stock WHERE id NOT IN (select distinct stock_id from stock_price)"
 cursor.execute(sql)
 records = cursor.fetchall()
 for row in records:

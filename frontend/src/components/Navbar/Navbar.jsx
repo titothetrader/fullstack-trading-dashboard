@@ -4,10 +4,12 @@ const Navbar = () => {
     return (
         <div className="nav-bar">
                 <div className='flex float-left'>
-                    <img 
-                        src={require("../../assets/images/Tensai-logo-horizontal-digital.png")}
-                        className="w-2/12 ml-10"    
-                    />
+                    <a href="/">
+                        <img 
+                            src={require("../../assets/images/Tensai-logo-horizontal-digital.png")}
+                            className="w-2/12 ml-10"    
+                        />
+                    </a>
                 </div>
             <div className='flex justify-end mr-10'>
                 <ul className='flex justify-end mb-2'>
