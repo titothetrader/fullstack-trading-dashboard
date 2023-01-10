@@ -45,6 +45,7 @@ symbols = []
 stock_dict = dict()
 
 # DB FUNCTIONS - get all symbols
+## STOCKS
 def getAllStocks(limit = 100):
     sql = "SELECT * from stock LIMIT " + str(limit)
     cursor.execute(sql)
@@ -56,6 +57,27 @@ def getStockDetails(symbol):
     cursor.execute(sql_details)
     details = cursor.fetchall()
     sql_prices = "SELECT stock_price.id, symbol, name, date, high, open, low, close, volume from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE symbol = '" + str(symbol) + "' ORDER BY stock_price.date"
+    cursor.execute(sql_prices)
+    prices = cursor.fetchall()
+    results = {
+        "details": details,
+        "prices": prices
+    }
+    return results
+
+## CRYPTOS
+def getAllCryptos(limit = 100):
+    sql = "SELECT * from crypto_trade LIMIT " + str(limit)
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    return records
+
+def getCryptoDetails(symbol):
+    print("getCryptoDetails")
+    sql_details = "SELECT * from crypto_trade WHERE symbol = '" + str(symbol) + "'"
+    cursor.execute(sql_details)
+    details = cursor.fetchall()
+    sql_prices = "SELECT * from crypto_trade JOIN crypto_price ON crypto_trade.id = crypto_price.crypto_id WHERE crypto_trade.symbol = '" + str(symbol) + "' ORDER BY crypto_price.date"
     cursor.execute(sql_prices)
     prices = cursor.fetchall()
     results = {
@@ -83,3 +105,18 @@ def index(request: Request, limit):
 def index(request: Request, symbol):
     stock = getStockDetails(symbol)
     return stock
+
+@app.get("/getAllCryptos/{limit}")
+def index(request: Request, limit):
+    # print(dir(request))
+    cryptos = getAllCryptos(limit)
+    # return{"title": "Dashboard", "stocks": stocks}
+    return cryptos
+
+@app.get("/getCryptoDetails/{symbol}")
+def index(request: Request, symbol):
+    symbol = symbol.replace("-", "/")
+    print(symbol)
+    cryptos = getCryptoDetails(symbol)
+    print(cryptos)
+    return cryptos

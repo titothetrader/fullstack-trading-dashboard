@@ -8,6 +8,9 @@ import requests
 # load dotEnv
 load_dotenv()
 
+# ct stores current time
+ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 # Connect to Oanda API
 def getOandaInfo(symbol):
     params = {

@@ -24,7 +24,7 @@ const Stocks = (props) => {
     },[isFetching])
 
     return (
-    <div className='responsive-container rounded-2xl'>
+      <div className='responsive-container rounded-2xl'>
         <h1 className="text-3xl underlie">Stocks</h1>
         <table className="text-2xl rounded-2xl mx-auto">
           <thead>

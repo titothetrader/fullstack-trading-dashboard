@@ -9,7 +9,7 @@ import requests
 
 
 # ct stores current time
-ct = datetime.datetime.now()
+ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # load dotEnv
 load_dotenv()
@@ -42,12 +42,12 @@ existingCryptos = []
 
 
 # DB FUNCTIONS
-sql = "SELECT DISTINCT * from stock"
+sql = "SELECT DISTINCT * from stock ORDER BY symbol DESC"
 cursor.execute(sql)
 records = cursor.fetchall()
 existingStocks = [row['symbol'] for row in records]
 
-sql = "SELECT DISTINCT * from crypto_trade"
+sql = "SELECT DISTINCT * from crypto_trade ORDER BY symbol DESC"
 cursor.execute(sql)
 records = cursor.fetchall()
 existingCryptos = [row['symbol'] for row in records]

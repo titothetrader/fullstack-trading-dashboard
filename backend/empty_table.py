@@ -27,5 +27,5 @@ def emptyTable(db_table):
     connection.commit()
 
 # EMPTY DATABASE
-table = input("Provide table to drop: ")
+table = input("Provide table to empty: ")
 emptyTable(table)

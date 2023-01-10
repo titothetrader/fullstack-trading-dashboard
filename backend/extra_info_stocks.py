@@ -15,26 +15,50 @@ load_dotenv()
 # DEFINE GLOBAL VARS
 existingSymbols = []
 stockData = {
-    "Description": '',
-    "Currency": '',
-    "Country": '',
-    "logo_url": '',
-    "company_url": '',
-    "Sector": '',
-    "Industry": '',
-    "MarketCapitalization": 0,
-    "DividendPerShare": 0,
-    "DividendYield": 0,
-    "DividendDate": "",
-    "EPS": 0,
-    "Beta": 0,
-    "PERatio": 0,
-    "RevenueTTM": 0,
-    "GrossProfitTTM": 0,
-    "52WeekHigh": 0,
-    "52WeekLow": 0,
-    "50DayMovingAverage": 0,
-    "200DayMovingAverage": 0,
+"AssetType": '',
+"Description": '',
+"CIK": '',
+"Currency": '',
+"Country": '',
+"Sector": '',
+"Industry": '',
+"Address": '',
+"FiscalYearEnd": '',
+"LatestQuarter": '',
+"MarketCapitalization": '',
+"EBITDA": 0,
+"PERatio": 0,
+"PEGRatio": 0,
+"BookValue": 0,
+"DividendPerShare": 0,
+"DividendYield": 0,
+"EPS": 0,
+"RevenuePerShareTTM": 0,
+"ProfitMargin": 0,
+"OperatingMarginTTM": 0,
+"ReturnOnAssetsTTM": 0,
+"ReturnOnEquityTTM": 0,
+"RevenueTTM": 0,
+"GrossProfitTTM": 0,
+"DilutedEPSTTM": 0,
+"QuarterlyEarningsGrowthYOY": 0,
+"QuarterlyRevenueGrowthYOY": 0,
+"AnalystTargetPrice": 0,
+"TrailingPE": 0,
+"ForwardPE": 0,
+"PriceToSalesRatioTTM": 0,
+"PriceToBookRatio": 0,
+"EVToRevenue": 0,
+"EVToEBITDA": 0,
+"Beta": 0,
+"52WeekHigh": 0,
+"52WeekLow": 0,
+"50DayMovingAverage": 0,
+"200DayMovingAverage": 0,
+"SharesOutstanding": 0,
+"DividendDate": '',
+"ExDividendDate": '',
+
 }
 
 avLabels = ["AssetType", "Description", "CIK", "Currency", "Country", "Sector", "Industry", "Address", "FiscalYearEnd", "LatestQuarter", "MarketCapitalization", "EBITDA", "PERatio", "PEGRatio", "BookValue", "DividendPerShare", "DividendYield", "EPS", "RevenuePerShareTTM", "ProfitMargin", "OperatingMarginTTM", "ReturnOnAssetsTTM", "ReturnOnEquityTTM", "RevenueTTM", "GrossProfitTTM", "DilutedEPSTTM", "QuarterlyEarningsGrowthYOY", "QuarterlyRevenueGrowthYOY", "AnalystTargetPrice", "TrailingPE", "ForwardPE", "PriceToSalesRatioTTM", "PriceToBookRatio", "EVToRevenue", "EVToEBITDA", "Beta", "52WeekHigh", "52WeekLow", "50DayMovingAverage", "200DayMovingAverage", "SharesOutstanding", "DividendDate", "ExDividendDate"]
@@ -56,10 +80,10 @@ except Error as e:
 # DB FUNCTIONS - get existing stocks in DB
 
 # Get all symbols in stock alphabetically
-sql = "SELECT * from stock ORDER BY symbol"
+# sql = "SELECT * from stock ORDER BY symbol DESC"
 
 # Get unique symbols that have price joined by stock id
-# sql = "SELECT DISTINCT symbol FROM stock_price JOIN stock ON stock_price.stock_id = stock.id WHERE stock.description = ''"
+sql = "SELECT DISTINCT symbol, stock.id FROM stock_price JOIN stock ON stock_price.stock_id = stock.id WHERE stock.description = ''"
 
 cursor.execute(sql)
 records = cursor.fetchall()

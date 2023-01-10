@@ -27,14 +27,19 @@ def createTables():
     cursor.execute(sqlTableStock)
     connection.commit()
     
-    sqlTablePrices = "CREATE TABLE IF NOT EXISTS stock_price (id int NOT NULL AUTO_INCREMENT, stock_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, m_avgerage float NOT NULL, PRIMARY KEY (id), KEY stock_id_idx (stock_id))"
+    sqlTableStockPrices = "CREATE TABLE IF NOT EXISTS stock_price (id int NOT NULL AUTO_INCREMENT, stock_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), KEY stock_id_idx (stock_id))"
     print("Creating table: stock_price")
-    cursor.execute(sqlTablePrices)
+    cursor.execute(sqlTableStockPrices)
     connection.commit()
     
     sqlTableCryptoTrade = "CREATE TABLE IF NOT EXISTS crypto_trade (id int NOT NULL AUTO_INCREMENT, symbol varchar(255) NOT NULL, name varchar(255) NOT NULL, exchange varchar(255) NOT NULL, category varchar(255) NOT NULL, status varchar(255) NOT NULL, tradable varchar(255) NOT NULL, marginable varchar(255) NOT NULL, maintenance_margin_requirement varchar(255) NOT NULL, shortable varchar(255) NOT NULL, easy_to_borrow varchar(255) NOT NULL, fractionable varchar(255) NOT NULL, PRIMARY KEY (id), UNIQUE KEY symbol (symbol))"
     print("Creating table: crypto_trade")
-    cursor.execute(sqlTableStock)
+    cursor.execute(sqlTableCryptoTrade)
+    connection.commit()
+    
+    sqlTableCryptoPrices = "CREATE TABLE IF NOT EXISTS crypto_price (id int NOT NULL AUTO_INCREMENT, crypto_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), KEY crypto_id_idx (crypto_id))"
+    print("Creating table: crypto_price")
+    cursor.execute(sqlTableCryptoPrices)
     connection.commit()
     
 createTables()
