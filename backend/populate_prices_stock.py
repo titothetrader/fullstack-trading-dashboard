@@ -88,8 +88,6 @@ def get_stocks_bars(symbols):
     connection.commit()
 
 
-
-
 # GET 200 SIZE CHUNKS OF STOCKS TO FETCH PRICES OF
 chunk_size = 200
 for i in range(0, len(symbols), chunk_size):

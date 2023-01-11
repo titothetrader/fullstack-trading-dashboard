@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useGetStockDetailsQuery } from '../../services/stocksAPI'
 
 import { StockBarChart } from '../../components'
+import { TradingViewWidget } from '../../components';
 
 const StockDetails = () => {
   const { stockSymbol } = useParams()
@@ -32,9 +33,12 @@ const StockDetails = () => {
       <h1 className='text-2xl h-16 underline bold'>
         Stock Details: {stockDetails?.exchange} {'>>'} {stockDetails?.symbol} {'>>'} {stockDetails?.name}
       </h1>
+      { stockDetails?.exchange &&
+        <TradingViewWidget exchange={stockDetails?.exchange} symbol={stockDetails?.symbol} />
+      }
       <div className='my-8'>
         {stockDetails && Object.keys(stockDetails).map((key, i) => (
-          <div key={i}>
+          <div key={i}> 
             <div>
               
             </div>

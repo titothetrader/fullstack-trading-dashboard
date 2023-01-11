@@ -3,7 +3,7 @@ import millify from 'millify'
 
 import { Chart } from "react-google-charts";
 
-import { LoadingSpinner } from '..';
+import { LoadingSpinner } from '../..';
 
 
   export const chartOptions = {

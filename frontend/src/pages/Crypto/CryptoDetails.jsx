@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useGetCryptoDetailsQuery } from '../../services/cryptoAPI'
 
-import { StockBarChart } from '../../components'
+import { StockBarChart, TradingViewWidget } from '../../components'
 
 const CryptoDetails = () => {
   const { cryptoSymbol } = useParams()
@@ -32,6 +32,9 @@ const CryptoDetails = () => {
       <h1 className='text-2xl h-16 underline bold'>
         Stock Details: {cryptoDetails?.exchange} {'>>'} {cryptoDetails?.symbol} {'>>'} {cryptoDetails?.name}
       </h1>
+      { cryptoDetails?.exchange &&
+        <TradingViewWidget exchange="binance" symbol={cryptoDetails?.symbol.replace("/", "")} />
+      }
       <div className='my-8'>
         {cryptoDetails && Object.keys(cryptoDetails).map((key, i) => (
           <div key={i}>
