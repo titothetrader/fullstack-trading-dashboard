@@ -1,53 +1,62 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { getStocks } from '../../services/stocksAPIaxios'
 import { useGetStocksQuery } from '../../services/stocksAPI';
 
 const Stocks = () => {
-    const [stocks, setStocks] = useState()
-
-    // REDUX TOOLKIT CALL
-    const {data, isFetching } = useGetStocksQuery(10)
-    // console.log(data)
-    
+  const queryParams = new URLSearchParams(window.location.search)
+  const filter = queryParams.get("filter")
+  // console.log(filter)
   
-    useEffect(() => {
-      // AXIOS CALL
-      // getStocks(10)
-      //   .then((data) => {
-      //     setStocks(data)
-      //   })
+  const [stocks, setStocks] = useState()
+
+  // REDUX TOOLKIT CALL
+  const {data, isFetching } = useGetStocksQuery({limit: 10, filter: filter})
+  // console.log(data)
+
+  useEffect(() => {    
+    setStocks(data)
+  },[isFetching])
+
+  return (
+    <div className='responsive-container rounded-2xl'>
+      <h1 className="text-3xl underlie">Stocks</h1>
       
-      setStocks(data)
-  
-    },[isFetching])
+      <form method='get' action="/stocks">
+        <select name="filter" className='text-black'>
+          <option value="">All Stocks</option>
+          <option value="new_intraday_highs">New Intraday Highs</option>
+          <option value="new_closing_highs">New Closing Highs</option>
+          <option value="new_intraday_lows">New Intraday Lows</option>
+          <option value="new_closing_lows">New Closing Lows</option>
+        </select>
+        <input type="submit" />
+      </form>
 
-    return (
-      <div className='responsive-container rounded-2xl'>
-        <h1 className="text-3xl underlie">Stocks</h1>
-        <table className="text-2xl rounded-2xl mx-auto">
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Symbol</th>
-            <th>Stock Name</th>
-          </tr>
-          </thead>
-          <tbody>
-        {stocks?.map((stock) => (
-          <tr key={stock.id} className="even:bg-slate-900 odd:bg-slate-800 hover:bg-sky-900">
-            <td>{stock.id}</td>
-            <td>{stock.symbol}</td>
-            <td>
-                <Link className='link' to={`/stocks/${stock.symbol}`}>{stock.name}</Link>
-            </td>
-          </tr>
-        ))}
-        </tbody>
-        </table>
-      </div>
-    )
+      <table className="text-2xl rounded-2xl mx-auto">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Symbol</th>
+          <th>Stock Name</th>
+        </tr>
+        </thead>
+        <tbody>
+      {stocks?.map((stock) => (
+        <tr key={stock.id} className="even:bg-slate-900 odd:bg-slate-800 hover:bg-sky-900">
+          <td>{stock.id}</td>
+          <td>{stock.symbol}</td>
+          <td>
+              <Link className='link' to={`/stocks/${stock.symbol}`}>{stock.name}</Link>
+          </td>
+        </tr>
+      ))}
+      </tbody>
+      </table>
+    </div>
+  )
 }
 
 export default Stocks

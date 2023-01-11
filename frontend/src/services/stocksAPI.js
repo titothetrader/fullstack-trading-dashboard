@@ -7,7 +7,7 @@ export const stocksApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
     endpoints: (builder) => ({
         getStocks: builder.query({
-            query: (limit) => `/getAllStocks/${limit}`
+            query: ({limit, filter}) => `/getAllStocks/${limit}?filter=${filter}`
         }),
         getStockDetails: builder.query({
             query: (symbol) => `/getStockDetails/${symbol}`

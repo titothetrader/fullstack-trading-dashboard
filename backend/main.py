@@ -6,9 +6,16 @@ import alpaca_trade_api as tradeapi
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
+import datetime
 
 # Load dotEnv
 load_dotenv()
+
+# ct stores current time
+ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+today = datetime.datetime.now() - datetime.timedelta(days=1)
+today = today.strftime("%Y-%m-%d")
+# print(today)
 
 # Load App and Routes    
 app = FastAPI()
@@ -46,8 +53,24 @@ stock_dict = dict()
 
 # DB FUNCTIONS - get all symbols
 ## STOCKS
-def getAllStocks(limit = 100):
-    sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
+def getAllStocks(limit = 100, filter = ''):
+    print(filter, today)
+    if filter == '' or filter == 'null':
+        sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
+            
+    if filter == 'new_intraday_highs':
+        sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
+        
+    if filter == 'new_closing_highs':
+        sql = f"select distinct * from (select symbol, stock.name, stock_id, max(close), date from stock_price join stock on stock.id = stock_price.stock_id group by symbol, date order by symbol) as t1 WHERE date = '{today}' order by symbol desc"
+        
+    if filter == 'new_intraday_lows':
+        sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
+        
+    if filter == 'new_closing_lows':
+        sql = f"select distinct * from (select symbol, stock.name, stock_id, min(close), date from stock_price join stock on stock.id = stock_price.stock_id group by symbol, date order by symbol) as t1 WHERE date = '{today}' order by symbol desc"
+        
+
     cursor.execute(sql)
     records = cursor.fetchall()
     return records
@@ -131,19 +154,21 @@ def getForexDetails(pair):
     # print(records)
     return records
 
-
+# -----------------------
+# -----------------------
 # Load FastAPI Routes
 @app.get("/")
 def index(request: Request):
+    stock_filter = request.query_params.get('filter', False)
+    print(stock_filter)
     stocks = getAllStocks()
     # return{"title": "Dashboard", "stocks": stocks}
     return templates.TemplateResponse("index.html", {"request": request, "stocks": stocks})
 
 @app.get("/getAllStocks/{limit}")
-def index(request: Request, limit):
-    # print(dir(request))
-    stocks = getAllStocks(limit)
-    # return{"title": "Dashboard", "stocks": stocks}
+async def read_item(limit = 10, filter = ''):
+    # print(filter)
+    stocks = getAllStocks(limit, filter)
     return stocks
 
 @app.get("/getStockDetails/{symbol}")
