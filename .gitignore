@@ -1,10 +1,11 @@
 /frontend/node_modules
 /frontend/*.env
 /frontend/*.git
-/frontend/*log
+/frontend/*.log
 /frontend/*logs
 
 /backend/*.env
 /backend/*pycache*
-/backend/*log
+/backend/*.log
 /backend/*logs
+/backend/*.csv

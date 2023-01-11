@@ -60,9 +60,9 @@ def insertStock(symbol, name, exchange, category, status, tradable, marginable, 
     cursor.execute(insert_stmt, data)
     connection.commit()
     
-def insertCrypto(symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable):
-    insert_stmt = "INSERT IGNORE INTO crypto_trade (symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    data = (symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable)
+def insertCrypto(symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable):
+    insert_stmt = "INSERT IGNORE INTO crypto_trade (symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    data = (symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable)
     # print(symbol, name, exchange, status, tradable)
     cursor.execute(insert_stmt, data)
     connection.commit()
@@ -78,7 +78,14 @@ def populate_DB():
             # print(asset)
             for attr, value in asset.__dict__.items():
                 # print(value["class"])
+                
                 symbol = value["symbol"]
+                
+                symbolSplit = symbol.split('/')
+                if len(symbolSplit) > 1:
+                    symbol_a = symbolSplit[0]
+                    symbol_b = symbolSplit[1]
+                    
                 name = value["name"]
                 exchange = value["exchange"]
                 category = value["class"]
@@ -97,7 +104,7 @@ def populate_DB():
                     
                 # Add CRYPTO to corresponding table
                 if value["class"] == 'crypto' and value["status"] == 'active' and value["tradable"] == True and value["symbol"] not in existingCryptos:
-                    insertCrypto(symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable)
+                    insertCrypto(symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable)
                     print(f"{ct}: {category} - Added new symbol: {symbol}")
         except Exception as e:
             print(alpacaAssets["symbol"])

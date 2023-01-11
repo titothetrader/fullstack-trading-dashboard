@@ -5,7 +5,7 @@ import mysql.connector
 import datetime
 import requests
 
-# load dotEnv
+# Load dotEnv
 load_dotenv()
 
 # ct stores current time

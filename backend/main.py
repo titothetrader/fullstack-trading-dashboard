@@ -47,7 +47,7 @@ stock_dict = dict()
 # DB FUNCTIONS - get all symbols
 ## STOCKS
 def getAllStocks(limit = 100):
-    sql = "SELECT * from stock LIMIT " + str(limit)
+    sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
     cursor.execute(sql)
     records = cursor.fetchall()
     return records
@@ -86,6 +86,21 @@ def getCryptoDetails(symbol):
     }
     return results
 
+## CRYPTO COIN
+def getAllCoins(limit):
+    sql = "SELECT * FROM crypto_coin LIMIT " + str(limit)
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    # print(records)
+    return records
+    
+def getCryptoCoin(symbol):
+    sql = f"SELECT * FROM crypto_coin WHERE symbol = '{symbol}'"
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    # print(records)
+    return records
+
 ## CRYPTO EXCHANGES
 def getAllCryptoExchanges(limit = 100):
     sql = "SELECT * FROM crypto_exchange LIMIT " + str(limit)
@@ -96,6 +111,21 @@ def getAllCryptoExchanges(limit = 100):
 
 def getCryptoExchangeDetails(exchange_id):
     sql = f"SELECT * FROM crypto_exchange WHERE coingecko_id = '{exchange_id}'"
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    # print(records)
+    return records
+
+## FOREX
+def getAllForex(limit = 100):
+    sql = "SELECT * FROM forex LIMIT " + str(limit)
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    # print(records)
+    return records
+
+def getForexDetails(pair):
+    sql = f"SELECT * FROM forex WHERE forex_pair = '{pair}'"
     cursor.execute(sql)
     records = cursor.fetchall()
     # print(records)
@@ -135,6 +165,18 @@ def index(request: Request, symbol):
     # print(cryptos)
     return cryptos
 
+@app.get("/getAllCoins/{limit}")
+def index(request: Request, limit):
+    # print(dir(request))
+    coins = getAllCoins(limit)
+    # return{"title": "Dashboard", "stocks": stocks}
+    return coins
+
+@app.get("/getCryptoCoin/{symbol}")
+def index(request: Request, symbol):
+    coin = getCryptoCoin(symbol)
+    return coin
+
 @app.get("/getAllCryptoExchanges/{limit}")
 def index(request: Request, limit):
     exchanges = getAllCryptoExchanges(limit)
@@ -145,3 +187,14 @@ def index(request: Request, exchange_id):
     exchange = getCryptoExchangeDetails(exchange_id)
     # print(cryptos)
     return exchange
+
+@app.get("/getAllForex/{limit}")
+def index(request: Request, limit):
+    pairs = getAllForex(limit)
+    return pairs
+
+@app.get("/getForexDetails/{pair}")
+def index(request: Request, pair):
+    pair = getForexDetails(pair)
+    # print(cryptos)
+    return pair

@@ -5,9 +5,11 @@ from mysql.connector import Error
 import mysql.connector
 import datetime
 
-
 # ct stores current time
-ct = datetime.datetime.now()
+ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+today = datetime.datetime.now() - datetime.timedelta(days=1)
+today = today.strftime("%Y-%m-%d")
+# print(today)
 
 # load dotEnv
 load_dotenv()

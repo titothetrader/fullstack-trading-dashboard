@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 
 import { Navbar } from './components';
-import { Home, Stocks, StockDetails, Crypto, CryptoDetails, Exchanges, ExchangeDetails, Forex } from './pages'
+import { Home, Stocks, StockDetails, Crypto, CryptoDetails, Coins, CoinDetails, Exchanges, ExchangeDetails, Commodities, Forex, ForexDetails } from './pages'
 
 function App() {
 
@@ -20,10 +20,13 @@ function App() {
           {/* <Route path='/stocks/:stockId' element={<StockDetails />} /> */}
           <Route path='/crypto' element={<Crypto />} />
           <Route path='/crypto/:cryptoSymbol' element={<CryptoDetails />} />
+          <Route path='/coins' element={<Coins />} />
+          <Route path='/coins/:coinSymbol' element={<CoinDetails />} />
           <Route path='/exchanges' element={<Exchanges />} />
-          <Route path='/exchanges/:exchangeId' element={<ExchangeDetails />} />
-          exchangeId
+          <Route path='/exchanges/:exchangeId' element={<ExchangeDetails />} />          
+          <Route path='/commodities' element={<Commodities />} />
           <Route path='/forex' element={<Forex />} />
+          <Route path='/forex/:forexPair' element={<ForexDetails />} />
         </Routes>
       </div>
     </div>

@@ -12,7 +12,7 @@ today = datetime.datetime.now() - datetime.timedelta(days=1)
 today = today.strftime("%Y-%m-%d")
 # print(today)
 
-# load dotEnv
+# Load dotEnv
 load_dotenv()
 
 # Connect to PlanetScale DB

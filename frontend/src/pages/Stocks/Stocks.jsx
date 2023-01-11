@@ -8,7 +8,7 @@ const Stocks = () => {
     const [stocks, setStocks] = useState()
 
     // REDUX TOOLKIT CALL
-    const {data, isFetching } = useGetStocksQuery(5)
+    const {data, isFetching } = useGetStocksQuery(10)
     // console.log(data)
     
   
