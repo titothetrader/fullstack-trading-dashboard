@@ -57,4 +57,20 @@ def createTables():
     cursor.execute(sqlTableForex)
     connection.commit()
     
+    sqlTableForexPrices = "CREATE TABLE IF NOT EXISTS forex_price (id int NOT NULL AUTO_INCREMENT, forex_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), KEY forex_id (forex_id))"
+    print("Creating table: forex_price")
+    cursor.execute(sqlTableForexPrices)
+    connection.commit()
+    
+    sqlTableStrategy = "CREATE TABLE IF NOT EXISTS strategy (id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, strategy_code varchar(255) NOT NULL, description varchar(255), direction varchar(255), type varchar(255), time_horizon varchar(255), image_url varchar(255), trigger varchar(255), take_profit varchar(255), stop_loss varchar(255), PRIMARY KEY (id), UNIQUE KEY strategy_code (strategy_code))"
+    print("Creating table: strategy")
+    cursor.execute(sqlTableStrategy)
+    connection.commit()
+    
+    sqlTableUseStrategy = "CREATE TABLE IF NOT EXISTS use_strategy (id int NOT NULL AUTO_INCREMENT, symbol_id varchar(255) NOT NULL, strategy_id varchar(255) NOT NULL, PRIMARY KEY (id), UNIQUE KEY symbol_id (symbol_id), UNIQUE KEY strategy_id (strategy_id))"
+    print("Creating table: use_strategy")
+    cursor.execute(sqlTableUseStrategy)
+    connection.commit()
+    
+    
 createTables()

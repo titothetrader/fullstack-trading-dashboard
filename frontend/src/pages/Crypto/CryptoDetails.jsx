@@ -29,7 +29,7 @@ const CryptoDetails = () => {
 
   return (
     <div className='mt-6'>
-      <h1 className='text-2xl h-16 underline bold'>
+      <h1 className='text-lg h-16 underline bold'>
         Stock Details: {cryptoDetails?.exchange} {'>>'} {cryptoDetails?.symbol} {'>>'} {cryptoDetails?.name}
       </h1>
       { cryptoDetails?.exchange &&

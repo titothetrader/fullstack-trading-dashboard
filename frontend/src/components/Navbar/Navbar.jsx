@@ -19,7 +19,8 @@ const Navbar = () => {
                     <li className="mr-6"><Link to="/coins">Coins</Link></li>
                     <li className="mr-6"><Link to="/exchanges">Exchanges</Link></li>
                     {/* <li className="mr-6"><Link to="/commodities">Commodities</Link></li> */}
-                    <li className=""><Link to="/forex">Forex</Link></li>
+                    <li className="mr-6"><Link to="/forex">Forex</Link></li>
+                    <li className=""><Link to="/strategies">Strategies</Link></li>
                 </ul>
             </div>
         </div>

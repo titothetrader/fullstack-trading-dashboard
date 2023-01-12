@@ -40,7 +40,7 @@ symbols = []
 crypto_dict = {}
 
 # DB FUNCTIONS - get all symbols
-sql = "SELECT DISTINCT * from crypto_trade ORDER BY symbol ASC"
+sql = "SELECT DISTINCT * from crypto_trade ORDER BY symbol DESC"
 cursor.execute(sql)
 records = cursor.fetchall()
 for row in records:

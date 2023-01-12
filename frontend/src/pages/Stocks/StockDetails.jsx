@@ -15,22 +15,15 @@ const StockDetails = () => {
 
   const { data, isFetching } = useGetStockDetailsQuery(stockSymbol)
 
-  const detailLabels = []
-  
+
   useEffect(() => {
     setStockDetails(data?.details?.[0])
     setStockPrices(data?.prices)
   }, [isFetching])
 
-  // useEffect(() => {
-  //   setBars(barsData?.[`0`])
-  //   console.log(barsData)
-  // }, [isFetchingBars])
-
-
   return (
     <div className='mt-6'>
-      <h1 className='text-2xl h-16 underline bold'>
+      <h1 className='text-lg h-16 underline bold'>
         Stock Details: {stockDetails?.exchange} {'>>'} {stockDetails?.symbol} {'>>'} {stockDetails?.name}
       </h1>
       { stockDetails?.exchange &&

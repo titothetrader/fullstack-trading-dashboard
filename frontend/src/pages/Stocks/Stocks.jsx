@@ -35,7 +35,7 @@ const Stocks = () => {
         <input type="submit" />
       </form>
 
-      <table className="text-2xl rounded-2xl mx-auto">
+      <table className="text-lg rounded-2xl mx-auto">
         <thead>
         <tr>
           <th>ID</th>

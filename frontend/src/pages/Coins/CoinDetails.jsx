@@ -21,7 +21,7 @@ const CoinDetails = () => {
 
     return (
         <div className='mt-6'>
-          <h1 className='text-2xl h-16 underline bold'>
+          <h1 className='text-lg h-16 underline bold'>
             Coin Details: {coinDetails?.coingecko_id} {'>>'} {coinDetails?.name}
           </h1>
           <div className='my-8'>

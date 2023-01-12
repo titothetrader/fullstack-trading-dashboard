@@ -54,7 +54,6 @@ stock_dict = dict()
 # DB FUNCTIONS - get all symbols
 ## STOCKS
 def getAllStocks(limit = 100, filter = ''):
-    print(filter, today)
     if filter == '' or filter == 'null':
         sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
             
@@ -62,15 +61,14 @@ def getAllStocks(limit = 100, filter = ''):
         sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
         
     if filter == 'new_closing_highs':
-        sql = f"select distinct * from (select symbol, stock.name, stock_id, max(close), date from stock_price join stock on stock.id = stock_price.stock_id group by symbol, date order by symbol) as t1 WHERE date = '{today}' order by symbol desc"
+        print(today)
+        sql = f"SELECT DISTINCT symbol, name, id, date, close from (SELECT p.stock_id, s.symbol, s.name, s.id, p.date, p.close, p.alltime_high from stock_price as p join stock as s on s.id = p.stock_id where close = alltime_high group by stock_id, date, close order by date desc) as t1 where date = '{today}'"
         
     if filter == 'new_intraday_lows':
         sql = "SELECT DISTINCT stock.id, stock.symbol, stock.name from stock JOIN stock_price ON stock.id = stock_price.stock_id WHERE stock_price.close != '' LIMIT " + str(limit)
         
     if filter == 'new_closing_lows':
-        sql = f"select distinct * from (select symbol, stock.name, stock_id, min(close), date from stock_price join stock on stock.id = stock_price.stock_id group by symbol, date order by symbol) as t1 WHERE date = '{today}' order by symbol desc"
-        
-
+        sql = f"SELECT DISTINCT id, symbol, name, date, close from (SELECT p.stock_id, s.symbol, s.name, s.id, p.date, p.close, p.alltime_low from stock_price as p join stock as s on s.id = p.stock_id where close = alltime_low group by stock_id, date, close order by date desc) as t1 where date = '{today}'"
     cursor.execute(sql)
     records = cursor.fetchall()
     return records
@@ -148,25 +146,47 @@ def getAllForex(limit = 100):
     return records
 
 def getForexDetails(pair):
-    sql = f"SELECT * FROM forex WHERE forex_pair = '{pair}'"
+    sql_details = f"SELECT * FROM forex WHERE forex_pair = '{pair}'"
+    cursor.execute(sql_details)
+    details = cursor.fetchall()
+    sql_prices = "SELECT * from forex JOIN forex_price ON forex.id = forex_price.forex_id WHERE forex.forex_pair = '" + str(pair) + "' ORDER BY forex_price.date"
+    cursor.execute(sql_prices)
+    prices = cursor.fetchall()
+    results = {
+        "details": details,
+        "prices": prices
+    }
+    return results
+    
+
+## STRATEGIES
+def getAllStrategies():
+    sql = "SELECT * FROM strategy ORDER BY name ASC"
     cursor.execute(sql)
     records = cursor.fetchall()
-    # print(records)
+    # print(stratRecords)
     return records
+
+def getStrategyDetails(strategyCode):
+    sql = f"SELECT * FROM strategy WHERE strategy_code = '{strategyCode}'"
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    return records
+    
 
 # -----------------------
 # -----------------------
 # Load FastAPI Routes
 @app.get("/")
 def index(request: Request):
-    stock_filter = request.query_params.get('filter', False)
-    print(stock_filter)
+    # stock_filter = request.query_params.get('filter', False)
+    # print(stock_filter)
     stocks = getAllStocks()
-    # return{"title": "Dashboard", "stocks": stocks}
     return templates.TemplateResponse("index.html", {"request": request, "stocks": stocks})
 
+# STOCKS
 @app.get("/getAllStocks/{limit}")
-async def read_item(limit = 10, filter = ''):
+async def index(limit = 10, filter = ''):
     # print(filter)
     stocks = getAllStocks(limit, filter)
     return stocks
@@ -176,25 +196,21 @@ def index(request: Request, symbol):
     stock = getStockDetails(symbol)
     return stock
 
+# CRYPTOS
 @app.get("/getAllCryptos/{limit}")
 def index(request: Request, limit):
-    # print(dir(request))
     cryptos = getAllCryptos(limit)
-    # return{"title": "Dashboard", "stocks": stocks}
     return cryptos
 
 @app.get("/getCryptoDetails/{symbol}")
 def index(request: Request, symbol):
     symbol = symbol.replace("-", "/")
     cryptos = getCryptoDetails(symbol)
-    # print(cryptos)
     return cryptos
 
 @app.get("/getAllCoins/{limit}")
 def index(request: Request, limit):
-    # print(dir(request))
     coins = getAllCoins(limit)
-    # return{"title": "Dashboard", "stocks": stocks}
     return coins
 
 @app.get("/getCryptoCoin/{symbol}")
@@ -210,9 +226,9 @@ def index(request: Request, limit):
 @app.get("/getCryptoExchangeDetails/{exchange_id}")
 def index(request: Request, exchange_id):
     exchange = getCryptoExchangeDetails(exchange_id)
-    # print(cryptos)
     return exchange
 
+# FOREX
 @app.get("/getAllForex/{limit}")
 def index(request: Request, limit):
     pairs = getAllForex(limit)
@@ -221,5 +237,15 @@ def index(request: Request, limit):
 @app.get("/getForexDetails/{pair}")
 def index(request: Request, pair):
     pair = getForexDetails(pair)
-    # print(cryptos)
     return pair
+
+# STRATEGIES
+@app.get("/getAllStrategies")
+def index(request: Request):
+    strategies = getAllStrategies()
+    return strategies
+
+@app.get("/getStrategyDetails/{strategyCode}")
+def index(request: Request, strategyCode):
+    strategy = getStrategyDetails(strategyCode)
+    return strategy

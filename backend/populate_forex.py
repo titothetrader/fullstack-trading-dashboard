@@ -41,7 +41,7 @@ def insertForex(forex_pair, pair_type, description, pairs_correlate, pair_a, pai
     
 
 # Load Forex CSV file of OANDA pairs
-with open('forex_table_input.csv') as csv_file:
+with open('input_table_forex.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:

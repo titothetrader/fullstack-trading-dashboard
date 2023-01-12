@@ -25,7 +25,7 @@ const Crypto = () => {
     return (
       <div className='responsive-container rounded-2xl'>
         <h1 className="text-3xl underlie">Cryptos</h1>
-        <table className="text-2xl rounded-2xl mx-auto">
+        <table className="text-lg rounded-2xl mx-auto">
           <thead>
           <tr>
             <th>ID</th>

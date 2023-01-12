@@ -20,7 +20,7 @@ const ExchangeDetails = () => {
 
   return (
     <div className='mt-6'>
-      <h1 className='text-2xl h-16 underline bold'>
+      <h1 className='text-lg h-16 underline bold'>
         Exchange Details: {exchangeDetails?.coingecko_id} {'>>'} {exchangeDetails?.name}
       </h1>
       <div className='my-8'>
