@@ -20,7 +20,7 @@ const Strategies = () => {
 
   return (
     <div className='responsive-container rounded-2xl'>
-      <h1 className="text-3xl underlie">Strategies</h1>
+      <h1 className="text-3xl underline">Strategies</h1>
       <table className="text-lg rounded-2xl mx-auto">
         <thead>
             <tr>

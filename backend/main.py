@@ -13,7 +13,7 @@ load_dotenv()
 
 # ct stores current time
 ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-today = datetime.datetime.now() - datetime.timedelta(days=1)
+today = datetime.datetime.now() - datetime.timedelta(days=1) 
 today = today.strftime("%Y-%m-%d")
 # print(today)
 
@@ -186,7 +186,7 @@ def index(request: Request):
 
 # STOCKS
 @app.get("/getAllStocks/{limit}")
-async def index(limit = 10, filter = ''):
+def index(limit = 10, filter = ''):
     # print(filter)
     stocks = getAllStocks(limit, filter)
     return stocks

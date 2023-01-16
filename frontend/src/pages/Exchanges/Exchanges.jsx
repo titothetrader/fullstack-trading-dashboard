@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useGetCryptoExchangesQuery } from '../../services/cryptoAPI';
+import { useGetCryptoExchangesQuery } from '../../services/cryptoAPI'
 
 const Exchanges = () => {
   const [exchanges, setExchanges] = useState()
@@ -19,7 +19,7 @@ const Exchanges = () => {
 
   return (
     <div className='responsive-container rounded-2xl'>
-      <h1 className="text-3xl underlie">Exchanges</h1>
+      <h1 className="text-3xl underline">Exchanges</h1>
       <table className="text-lg rounded-2xl mx-auto">
         <thead>
         <tr>

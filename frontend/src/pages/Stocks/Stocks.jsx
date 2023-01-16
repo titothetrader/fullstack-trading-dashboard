@@ -22,9 +22,9 @@ const Stocks = () => {
 
   return (
     <div className='responsive-container rounded-2xl'>
-      <h1 className="text-3xl underlie">Stocks</h1>
+      <h1 className="text-3xl underline">Stocks</h1>
       
-      <form method='get' action="/stocks">
+      <form method='get' action="/stocks" >
         <select name="filter" className='text-black'>
           <option value="">All Stocks</option>
           <option value="new_intraday_highs">New Intraday Highs</option>
@@ -32,7 +32,7 @@ const Stocks = () => {
           <option value="new_intraday_lows">New Intraday Lows</option>
           <option value="new_closing_lows">New Closing Lows</option>
         </select>
-        <input type="submit" />
+        <input type="submit" className='block mx-auto' />
       </form>
 
       <table className="text-lg rounded-2xl mx-auto">

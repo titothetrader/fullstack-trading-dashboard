@@ -20,7 +20,7 @@ const Forex = () => {
 
   return (
     <div className='responsive-container rounded-2xl'>
-      <h1 className="text-3xl underlie">Forex</h1>
+      <h1 className="text-3xl underline">Forex</h1>
       <table className="text-lg rounded-2xl mx-auto">
         <thead>
         <tr>

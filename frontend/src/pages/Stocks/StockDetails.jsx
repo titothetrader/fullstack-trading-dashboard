@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useGetStockDetailsQuery } from '../../services/stocksAPI'
 
-import { StockBarChart } from '../../components'
+import { StockBarChart, StrategyFilter } from '../../components'
 import { TradingViewWidget } from '../../components';
 
 const StockDetails = () => {
@@ -14,6 +14,7 @@ const StockDetails = () => {
   const [stockPrices, setStockPrices] = useState()
 
   const { data, isFetching } = useGetStockDetailsQuery(stockSymbol)
+
 
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const StockDetails = () => {
       { stockDetails?.exchange &&
         <TradingViewWidget exchange={stockDetails?.exchange} symbol={stockDetails?.symbol} />
       }
+      <StrategyFilter />
       <div className='my-8'>
         {stockDetails && Object.keys(stockDetails).map((key, i) => (
           <div key={i}> 
