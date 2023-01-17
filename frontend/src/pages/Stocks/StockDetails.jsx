@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useGetStockDetailsQuery } from '../../services/stocksAPI'
 
-import { StockBarChart, StrategyFilter } from '../../components'
+import { StockBarChart, ApplyStrategy } from '../../components'
 import { TradingViewWidget } from '../../components';
 
 const StockDetails = () => {
@@ -13,14 +13,15 @@ const StockDetails = () => {
   const [stockDetails, setStockDetails] = useState()
   const [stockPrices, setStockPrices] = useState()
 
-  const { data, isFetching } = useGetStockDetailsQuery(stockSymbol)
-
+  const { data: stockData, isFetching: isFetchingStocks, isSuccess: isSuccessStocks } = useGetStockDetailsQuery(stockSymbol)
 
 
   useEffect(() => {
-    setStockDetails(data?.details?.[0])
-    setStockPrices(data?.prices)
-  }, [isFetching])
+    setStockDetails(stockData?.details[0])
+    setStockPrices(stockData?.prices)
+    // {console.log(stockData)}
+  }, [isFetchingStocks])
+
 
   return (
     <div className='mt-6'>
@@ -30,7 +31,7 @@ const StockDetails = () => {
       { stockDetails?.exchange &&
         <TradingViewWidget exchange={stockDetails?.exchange} symbol={stockDetails?.symbol} />
       }
-      <StrategyFilter />
+      <ApplyStrategy assetType="stock" parentSymbol={stockDetails?.symbol} parentData={stockData} isParentSuccess={isSuccessStocks} isParentFetching={isFetchingStocks}/>
       <div className='my-8'>
         {stockDetails && Object.keys(stockDetails).map((key, i) => (
           <div key={i}> 
@@ -41,7 +42,7 @@ const StockDetails = () => {
           </div>
         ))}
       </div>
-        {!isFetching && stockPrices &&
+        {!isFetchingStocks && stockPrices &&
           <StockBarChart prices={stockPrices} />
         }
     </div>

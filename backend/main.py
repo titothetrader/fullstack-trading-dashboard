@@ -3,9 +3,10 @@ from dotenv import load_dotenv
 from mysql.connector import Error
 import mysql.connector
 import alpaca_trade_api as tradeapi
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Body, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
 import datetime
 
 # Load dotEnv
@@ -168,10 +169,31 @@ def getAllStrategies():
     return records
 
 def getStrategyDetails(strategyCode):
-    sql = f"SELECT * FROM strategy WHERE strategy_code = '{strategyCode}'"
-    cursor.execute(sql)
-    records = cursor.fetchall()
-    return records
+    sql_details = f"SELECT * FROM strategy WHERE strategy_code = '{strategyCode}'"
+    cursor.execute(sql_details)
+    details = cursor.fetchall()
+    sql_applied = f"SELECT * FROM strategy JOIN apply_strategy ON strategy.id = apply_strategy.strategy_id WHERE strategy.strategy_code = '{strategyCode}'"
+    cursor.execute(sql_applied)
+    applied = cursor.fetchall()
+    results = {
+        "details": details,
+        "applied": applied
+    }
+    return results
+
+def applyStrategy(asset_type, strategy_id, symbol):
+    print(asset_type, strategy_id, symbol)
+    applied_strategy_code = f"{asset_type}{symbol}{strategy_id}"
+    insert_stmt = "INSERT IGNORE INTO apply_strategy (applied_strategy_code, asset_type, strategy_id, symbol) VALUES (%s, %s, %s, %s)"
+    data = (applied_strategy_code, asset_type, strategy_id, symbol)
+    cursor.execute(insert_stmt, data)
+    connection.commit()
+    # sql = "SELECT strategy_code FROM strategy WHERE id = " + str(strategy_id)
+    # cursor.execute(sql)
+    # data = cursor.fetchall()
+    # strategy_code = data[0]["strategy_code"]
+    # return RedirectResponse(url=f"/getStrategyDetails/{strategy_code}", status_code=303)
+    return
     
 
 # -----------------------
@@ -184,6 +206,7 @@ def index(request: Request):
     stocks = getAllStocks()
     return templates.TemplateResponse("index.html", {"request": request, "stocks": stocks})
 
+
 # STOCKS
 @app.get("/getAllStocks/{limit}")
 def index(limit = 10, filter = ''):
@@ -195,6 +218,7 @@ def index(limit = 10, filter = ''):
 def index(request: Request, symbol):
     stock = getStockDetails(symbol)
     return stock
+
 
 # CRYPTOS
 @app.get("/getAllCryptos/{limit}")
@@ -228,6 +252,7 @@ def index(request: Request, exchange_id):
     exchange = getCryptoExchangeDetails(exchange_id)
     return exchange
 
+
 # FOREX
 @app.get("/getAllForex/{limit}")
 def index(request: Request, limit):
@@ -239,6 +264,7 @@ def index(request: Request, pair):
     pair = getForexDetails(pair)
     return pair
 
+
 # STRATEGIES
 @app.get("/getAllStrategies")
 def index(request: Request):
@@ -249,3 +275,10 @@ def index(request: Request):
 def index(request: Request, strategyCode):
     strategy = getStrategyDetails(strategyCode)
     return strategy
+
+@app.post("/applyStrategy")
+def index(asset_type: str = Body(..., embed=True), strategy_id: str = Body(..., embed=True), symbol: str = Body(..., embed=True)):
+    # print('TEST')
+    # print(id, symbol)
+    response = applyStrategy(asset_type, strategy_id, symbol)
+    return response

@@ -25,14 +25,14 @@ const Stocks = () => {
       <h1 className="text-3xl underline">Stocks</h1>
       
       <form method='get' action="/stocks" >
-        <select name="filter" className='text-black'>
+        <select name="filter">
           <option value="">All Stocks</option>
           <option value="new_intraday_highs">New Intraday Highs</option>
           <option value="new_closing_highs">New Closing Highs</option>
           <option value="new_intraday_lows">New Intraday Lows</option>
           <option value="new_closing_lows">New Closing Lows</option>
         </select>
-        <input type="submit" className='block mx-auto' />
+        <button type="submit" className='block mx-auto'>Submit</button>
       </form>
 
       <table className="text-lg rounded-2xl mx-auto">

@@ -74,7 +74,6 @@ def getOandaInfo(symbol):
     # print(oandaAsset)
     
     pair = symbol
-    print(f"{ct}: Processing bars for forex {pair} from {date} to {today}")
     
     # print(oandaAsset["candles"][0]["mid"])
     alltime_high = 0
@@ -92,6 +91,8 @@ def getOandaInfo(symbol):
         
         if pair in pairs:
             insertForexPrices(pair, date, high, open, low, close, volume, vwap, alltime_high, alltime_low)
+    print(f"{ct}: Processing bars for forex {pair} from {date} to {today}")
+            
     
 oanda_pairs = os.getenv("OANDA_PAIRS")
 oanda_pairs = oanda_pairs.split(',')

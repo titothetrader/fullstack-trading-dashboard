@@ -4,8 +4,9 @@ import { stocksApi } from "../services/stocksAPI"
 import { cryptoApi } from "../services/cryptoAPI"
 import { forexApi } from "../services/forexAPI"
 import { strategyApi } from "../services/strategiesAPI"
+import { setupListeners } from "@reduxjs/toolkit/dist/query"
 
-export default configureStore({
+export const store = configureStore({
     reducer: {
         [stocksApi.reducerPath]: stocksApi.reducer,
         [cryptoApi.reducerPath]: cryptoApi.reducer,
@@ -15,3 +16,5 @@ export default configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(stocksApi.middleware, cryptoApi.middleware, forexApi.middleware, strategyApi.middleware),
 })
+
+setupListeners(store.dispatch)

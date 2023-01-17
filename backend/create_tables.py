@@ -67,9 +67,9 @@ def createTables():
     cursor.execute(sqlTableStrategy)
     connection.commit()
     
-    sqlTableUseStrategy = "CREATE TABLE IF NOT EXISTS use_strategy (id int NOT NULL AUTO_INCREMENT, symbol_id varchar(255) NOT NULL, strategy_id varchar(255) NOT NULL, PRIMARY KEY (id), UNIQUE KEY symbol_id (symbol_id), UNIQUE KEY strategy_id (strategy_id))"
-    print("Creating table: use_strategy")
-    cursor.execute(sqlTableUseStrategy)
+    sqlTableApplyStrategy = "CREATE TABLE IF NOT EXISTS apply_strategy (id int NOT NULL AUTO_INCREMENT, applied_strategy_code varchar(255) NOT NULL, asset_type varchar(255) NOT NULL, symbol varchar(255) NOT NULL, strategy_id varchar(255) NOT NULL, PRIMARY KEY (id), UNIQUE KEY applied_strategy_code (applied_strategy_code))"
+    print("Creating table: apply_strategy")
+    cursor.execute(sqlTableApplyStrategy)
     connection.commit()
     
     

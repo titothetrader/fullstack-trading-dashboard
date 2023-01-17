@@ -1,5 +1,9 @@
+/* GLOBAL STYLES */
 @import "./global-styles/Responsive.css";
 @import "./global-styles/Text.css";
+@import "./global-styles/Forms.css";
+
+/* COMPONENT STYLES */
 @import "./components/Navbar/Navbar.css";
 
 
@@ -8,7 +12,7 @@
 @tailwind utilities;
 
 
-
+/* BASE STYLES */
 @layer base {
   body {
     @apply bg-slate-900;
