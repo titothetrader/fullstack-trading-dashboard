@@ -40,7 +40,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -280,5 +281,5 @@ def index(request: Request, strategyCode):
 def index(asset_type: str = Body(..., embed=True), strategy_id: str = Body(..., embed=True), symbol: str = Body(..., embed=True)):
     # print('TEST')
     # print(id, symbol)
-    response = applyStrategy(asset_type, strategy_id, symbol)
-    return response
+    applyStrategy(asset_type, strategy_id, symbol)
+    return

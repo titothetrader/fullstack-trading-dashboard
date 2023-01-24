@@ -3,6 +3,11 @@ from dotenv import load_dotenv
 from mysql.connector import Error
 import mysql.connector
 import alpaca_trade_api as tradeapi
+
+from alpaca.data.historical import StockHistoricalDataClient
+from alpaca.data.requests import StockBarsRequest
+from alpaca.data.timeframe import TimeFrame
+
 import datetime
 
 # ct stores current time
@@ -34,6 +39,9 @@ HEADERS = {'APCA-API-KEY-ID': os.getenv("ALPACA_KEY"),
 
 api = tradeapi.REST(os.getenv("ALPACA_KEY"), os.getenv("ALPACA_SECRET"), os.getenv("ALPACA_BASE_URL"))
 
+stock_client = StockHistoricalDataClient(os.getenv("ALPACA_KEY"),  os.getenv("ALPACA_SECRET"))
+
+
 # DEFINE GLOBAL VARS
 symbols = []
 stock_dict = {}
@@ -62,6 +70,15 @@ def insertPrices(symbol, date, high, open, low, close, volume, vwap, alltime_hig
     
 # ITERATE BARS OF MANY STOCK DATA
 def get_stocks_bars(symbols):
+    request_params = StockBarsRequest(
+                        symbol_or_symbols=symbols,
+                        timeframe=TimeFrame.Day,
+                        start=datetime.datetime.strptime("2022-07-01", '%Y-%m-%d'),
+                 )
+
+    bars = stock_client.get_stock_bars(request_params)
+    print(bars)
+    
     bar_iter = api.get_bars_iter(symbols, tradeapi.TimeFrame.Day, "2022-07-01", today, adjustment='raw')
     prevSymbol = ''
     alltime_high = 0
