@@ -5,6 +5,8 @@ import { useLocation } from 'react-router-dom'
 import { getStocks } from '../../services/stocksAPIaxios'
 import { useGetStocksQuery } from '../../services/stocksAPI';
 
+import LoadingSpinner from '../../components/Global/LoadingSpinner/LoadingSpinner'
+
 const Stocks = () => {
   const queryParams = new URLSearchParams(window.location.search)
   const filter = queryParams.get("filter")
@@ -35,26 +37,37 @@ const Stocks = () => {
         <button type="submit" className='block mx-auto'>Submit</button>
       </form>
 
-      <table className="text-lg rounded-2xl mx-auto">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Symbol</th>
-          <th>Stock Name</th>
-        </tr>
-        </thead>
-        <tbody>
-      {stocks?.map((stock) => (
-        <tr key={stock.id} className="even:bg-slate-900 odd:bg-slate-800 hover:bg-sky-900">
-          <td>{stock.id}</td>
-          <td>{stock.symbol}</td>
-          <td>
-              <Link className='link' to={`/stocks/${stock.symbol}`}>{stock.name}</Link>
-          </td>
-        </tr>
-      ))}
-      </tbody>
+      {isFetching &&
+        <LoadingSpinner />
+      }
+      {!isFetching && stocks?.length > 0 &&
+        <table className="text-lg rounded-2xl mx-auto">
+          {console.log(stocks)}
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Symbol</th>
+            <th>Stock Name</th>
+          </tr>
+          </thead>
+          <tbody>
+        {stocks?.map((stock) => (
+          <tr key={stock.id} className="even:bg-slate-900 odd:bg-slate-800 hover:bg-sky-900">
+            <td>{stock.id}</td>
+            <td>{stock.symbol}</td>
+            <td>
+                <Link className='link' to={`/stocks/${stock.symbol}`}>{stock.name}</Link>
+            </td>
+          </tr>
+        ))}
+        </tbody>
       </table>
+      }
+      {!isFetching && stocks?.length < 1 &&
+        <div>
+          No results found
+        </div>
+      }
     </div>
   )
 }

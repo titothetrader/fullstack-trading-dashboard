@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 const ApplyStrategy = (props) => {
     const [strategies, setStrategies] = useState()
-    const [strategyId, setStrategyId] = useState()
+    const [strategyId, setStrategyId] = useState(0)
     const navigate = useNavigate()
   
     // REDUX TOOLKIT CALL
@@ -23,7 +23,7 @@ const ApplyStrategy = (props) => {
     const submitStrategy = (event) => {
       event.preventDefault()
       console.log(event.target.strategy_id.value, event.target.strategy_symbol.value)
-      let asset_type = "stocks"
+      let asset_type = props.assetType
       let strategy_id = event.target.strategy_id.value
       let symbol = event.target.strategy_symbol.value
       applyStrategy({asset_type, strategy_id, symbol}).then(() => {
@@ -34,7 +34,9 @@ const ApplyStrategy = (props) => {
           }
           })
         // console.log(strat_code)
-        navigate(`/strategies/${strat_code}`)
+        setTimeout(() => {
+          navigate(`/strategies/${strat_code}`)
+        }, 500)
       })
     }
 
@@ -51,7 +53,7 @@ const ApplyStrategy = (props) => {
       <div>
         <form onSubmit={submitStrategy}>
           <select name="strategy_id" title="select strategy" onChange={selectStrategyId}>
-            <option>Select Strategy</option>
+            <option value={0}>Select Strategy</option>
             {strategies && strategies.map((strategy) => (
               <option key={strategy.id} value={strategy.id}>{strategy.name}
                 {/* {console.log(strategy)} */}
@@ -59,7 +61,7 @@ const ApplyStrategy = (props) => {
           ))}
           </select>
           <input type='text' name="strategy_symbol" defaultValue={props.parentSymbol} className='hidden'/>
-          <button type="submit" className='block mx-auto'>Apply Strategy</button>
+          <button type="submit" disabled={!strategyId} className='block mx-auto'>Apply Strategy</button>
         </form>
       </div>
     </div>

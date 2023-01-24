@@ -19,6 +19,11 @@ const StrategyDetails = () => {
     setStrategyApplied(data?.applied)
   },[isFetching])
 
+  useEffect(() => {
+    setStrategyDetails(data?.details[0])
+    setStrategyApplied(data?.applied)
+  },[])
+
   return (
     <div className='mt-6'>
       <h1 className='text-lg h-16 underline bold'>
@@ -41,6 +46,7 @@ const StrategyDetails = () => {
             <tr>
               <th>Asset Type</th>
               <th>Symbol</th>
+              <th>Name</th>
             </tr>
           </thead>
           <tbody>

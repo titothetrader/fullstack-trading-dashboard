@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useGetCryptoDetailsQuery } from '../../services/cryptoAPI'
 
-import { StockBarChart, TradingViewWidget } from '../../components'
+import { ApplyStrategy, StockBarChart, TradingViewWidget } from '../../components'
 
 const CryptoDetails = () => {
   const { cryptoSymbol } = useParams()
@@ -12,14 +12,14 @@ const CryptoDetails = () => {
   const [cryptoDetails, setCryptoDetails] = useState()
   const [cryptoPrices, setCryptoPrices] = useState()
 
-  const { data, isFetching } = useGetCryptoDetailsQuery(cryptoSymbol)
+  const { data: cryptoData, isFetching: isFetchingCrypto, isSuccess: isSuccessCrypto } = useGetCryptoDetailsQuery(cryptoSymbol)
 
   const detailLabels = []
   
   useEffect(() => {
-    setCryptoDetails(data?.details?.[0])
-    setCryptoPrices(data?.prices)
-  }, [isFetching])
+    setCryptoDetails(cryptoData?.details?.[0])
+    setCryptoPrices(cryptoData?.prices)
+  }, [isFetchingCrypto])
 
   // useEffect(() => {
   //   setBars(barsData?.[`0`])
@@ -35,6 +35,7 @@ const CryptoDetails = () => {
       { cryptoDetails?.exchange &&
         <TradingViewWidget exchange="binance" symbol={cryptoDetails?.symbol.replace("/", "")} />
       }
+      <ApplyStrategy assetType="crypto" parentSymbol={cryptoDetails?.symbol} parentData={cryptoData} isParentSuccess={isSuccessCrypto} isParentFetching={isFetchingCrypto}/>
       <div className='my-8'>
         {cryptoDetails && Object.keys(cryptoDetails).map((key, i) => (
           <div key={i}>
@@ -45,7 +46,7 @@ const CryptoDetails = () => {
           </div>
         ))}
       </div>
-        {!isFetching && cryptoPrices &&
+        {!isFetchingCrypto && cryptoPrices &&
           <StockBarChart prices={cryptoPrices} />
         }
     </div>

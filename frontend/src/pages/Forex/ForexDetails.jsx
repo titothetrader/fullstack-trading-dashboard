@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { StockBarChart, TradingViewWidget } from '../../components'
+import { ApplyStrategy, StockBarChart, TradingViewWidget } from '../../components'
 
 import { useGetForexDetailsQuery } from '../../services/forexAPI'
 
@@ -10,14 +10,14 @@ const ForexDetails = () => {
   const [forexPairDetails, setForexPairDetails] = useState()
   const [forexPrices, setForexPrices] = useState()
 
-  const { data, isFetching } = useGetForexDetailsQuery(forexPair)
+  const { data: forexData, isFetching: isFetchingForex, isSuccess: isSuccessForex } = useGetForexDetailsQuery(forexPair)
 
   
   useEffect(() => {
-    // console.log(data)
-    setForexPairDetails(data?.details[0])
-    setForexPrices(data?.prices)
-  }, [isFetching])
+    // console.log(forexData)
+    setForexPairDetails(forexData?.details[0])
+    setForexPrices(forexData?.prices)
+  }, [isFetchingForex])
   
   return (
     <div className='mt-6'>
@@ -27,6 +27,7 @@ const ForexDetails = () => {
         {forexPairDetails &&
           <TradingViewWidget exchange="OANDA" symbol={forexPairDetails?.forex_pair.replace("_","")} />
         }
+        <ApplyStrategy assetType="forex" parentSymbol={forexPairDetails?.forex_pair} parentData={forexData} isParentSuccess={isSuccessForex} isParentFetching={isFetchingForex}/>
       <div className='my-8'>
         {forexPairDetails && Object.keys(forexPairDetails).map((key, i) => (
           <div key={i}>
@@ -37,7 +38,7 @@ const ForexDetails = () => {
           </div>
         ))}
       </div>
-      {!isFetching && forexPrices &&
+      {!isFetchingForex && forexPrices &&
           <StockBarChart prices={forexPrices} />
         }
     </div>
