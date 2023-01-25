@@ -1,9 +1,32 @@
 <html>
-    <head>Trading Dashboard</head>
-    <body>
-        {% for stock in stocks %}
-            {{ stock.id }}
-            {{ stock.symbol }}
-        {% endfor %}
+    <head>
+        <title>Trading Dashboard</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="text-center">
+        <div class="h-24 pt-4 bg-slate-900 align-center">
+            <h1 class="text-3xl underline text-white">Trading Dashboard</h1>
+        </div>
+        
+        <div class="sm:w-full md:w-1/2 lg:w-3/4 mx-auto">
+        <table class="table-auto m-8 bg-slate-700 text-white rounded-xl mx-auto">
+            <thead class="h-14">
+              <tr>
+                <th>ID</th>
+                <th>Symbol</th>
+                <th>Stock Name</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for stock in stocks %}
+                <tr class="h-12 even:bg-slate-600 odd:bg-slate-500 hover:bg-slate-900 text-center">
+                    <td>{{ stock.id }}</td>
+                    <td>{{ stock.symbol }}</td>
+                    <td class="text-left px-3"><a href="">{{ stock.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
     </body>
 </html>

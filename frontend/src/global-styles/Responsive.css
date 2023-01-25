@@ -1,0 +1,7 @@
+@tailwind base;
+
+@layer base {
+    .responsive-container {
+      @apply sm:w-full md:w-1/2 lg:w-3/4 mx-auto text-center;
+    }
+  }

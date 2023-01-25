@@ -1,0 +1,7 @@
+@tailwind base;
+
+@layer base {
+    select, input {
+      @apply text-black !important;
+    }
+  }
