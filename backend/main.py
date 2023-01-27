@@ -185,7 +185,7 @@ def getStrategyDetails(strategyCode):
 def applyStrategy(asset_type, strategy_id, symbol):
     print(asset_type, strategy_id, symbol)
     applied_strategy_code = f"{asset_type}{symbol}{strategy_id}"
-    insert_stmt = "INSERT IGNORE INTO apply_strategy (applied_strategy_code, asset_type, strategy_id, symbol) VALUES (%s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO apply_strategy (applied_strategy_code, asset_type, strategy_id, symbol) VALUES (%s, %s, %s, %s)"
     data = (applied_strategy_code, asset_type, strategy_id, symbol)
     cursor.execute(insert_stmt, data)
     connection.commit()

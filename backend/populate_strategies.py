@@ -22,7 +22,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -32,7 +33,7 @@ except Error as e:
     
 # DB Functions
 def insertStrategy(name, strategy_code, description, direction, type, time_horizon, image_url, trigger, take_profit, stop_loss):
-    insert_stmt = "INSERT IGNORE INTO strategy (name, strategy_code, description, direction, type, time_horizon, image_url, trigger, take_profit, stop_loss) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO strategy (name, strategy_code, description, direction, type, time_horizon, image_url, trigger, take_profit, stop_loss) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (name, strategy_code, description, direction, type, time_horizon, image_url, trigger, take_profit, stop_loss)
     cursor.execute(insert_stmt, data)
     connection.commit()

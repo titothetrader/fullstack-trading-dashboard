@@ -22,7 +22,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -32,7 +33,7 @@ except Error as e:
     
 # DB Functions
 def insertForex(forex_pair, pair_type, description, pairs_correlate, pair_a, pair_b, country_a, country_b, currency_a, currency_b, currency_nickname_a, currency_nickname_b, central_bank_a, central_bank_b, flag_a, flag_b):
-    insert_stmt = "INSERT IGNORE INTO forex (forex_pair, pair_type, description, pairs_correlate, pair_a, pair_b, country_a, country_b, currency_a, currency_b, currency_nickname_a, currency_nickname_b, central_bank_a, central_bank_b, flag_a, flag_b) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO forex (forex_pair, pair_type, description, pairs_correlate, pair_a, pair_b, country_a, country_b, currency_a, currency_b, currency_nickname_a, currency_nickname_b, central_bank_a, central_bank_b, flag_a, flag_b) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (forex_pair, pair_type, description, pairs_correlate, pair_a, pair_b, country_a, country_b, currency_a, currency_b, currency_nickname_a, currency_nickname_b, central_bank_a, central_bank_b, flag_a, flag_b)
     cursor.execute(insert_stmt, data)
     connection.commit()

@@ -12,7 +12,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -27,7 +28,7 @@ def createTables():
     cursor.execute(sqlTableStock)
     connection.commit()
     
-    sqlTableStockPrices = "CREATE TABLE IF NOT EXISTS stock_price (id int NOT NULL AUTO_INCREMENT, stock_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), KEY stock_id_idx (stock_id))"
+    sqlTableStockPrices = "CREATE TABLE IF NOT EXISTS stock_price (id int NOT NULL AUTO_INCREMENT, stock_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), UNIQUE KEY (stock_id, date))"
     print("Creating table: stock_price")
     cursor.execute(sqlTableStockPrices)
     connection.commit()
@@ -37,7 +38,7 @@ def createTables():
     cursor.execute(sqlTableCryptoTrade)
     connection.commit()
     
-    sqlTableCryptoPrices = "CREATE TABLE IF NOT EXISTS crypto_price (id int NOT NULL AUTO_INCREMENT, crypto_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), KEY crypto_id_idx (crypto_id))"
+    sqlTableCryptoPrices = "CREATE TABLE IF NOT EXISTS crypto_price (id int NOT NULL AUTO_INCREMENT, crypto_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), UNIQUE KEY (crypto_id, date))"
     print("Creating table: crypto_price")
     cursor.execute(sqlTableCryptoPrices)
     connection.commit()
@@ -57,7 +58,7 @@ def createTables():
     cursor.execute(sqlTableForex)
     connection.commit()
     
-    sqlTableForexPrices = "CREATE TABLE IF NOT EXISTS forex_price (id int NOT NULL AUTO_INCREMENT, forex_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), KEY forex_id (forex_id))"
+    sqlTableForexPrices = "CREATE TABLE IF NOT EXISTS forex_price (id int NOT NULL AUTO_INCREMENT, forex_id int, date date NOT NULL, open float NOT NULL, high float NOT NULL, low float NOT NULL, close float NOT NULL, volume float NOT NULL, vwap float NOT NULL, alltime_high float NOT NULL, alltime_low float NOT NULL, PRIMARY KEY (id), UNIQUE KEY (forex_id, date))"
     print("Creating table: forex_price")
     cursor.execute(sqlTableForexPrices)
     connection.commit()

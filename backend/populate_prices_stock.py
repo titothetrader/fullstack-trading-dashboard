@@ -7,7 +7,7 @@ import alpaca_trade_api as tradeapi
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
-
+import pytz
 import datetime
 
 # ct stores current time
@@ -25,7 +25,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -61,7 +62,7 @@ for row in records:
     
 def insertPrices(symbol, date, high, open, low, close, volume, vwap, alltime_high, alltime_low):
     stock_id = stock_dict[symbol]
-    insert_stmt = "INSERT IGNORE INTO stock_price (stock_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO stock_price (stock_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (stock_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low)
     cursor.execute(insert_stmt, data)
     connection.commit()
@@ -89,7 +90,7 @@ def get_stocks_bars(symbols):
         for attr, value in bar.__dict__.items():
             # print(value)
             symbol = value["S"]
-            date = value["t"]
+            date = datetime.datetime.strptime(value["t"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.UTC)
             high = value["h"]
             open = value["o"]
             low = value["l"]

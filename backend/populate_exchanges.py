@@ -22,7 +22,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -41,7 +42,7 @@ for row in records:
 # print(symbols)
     
 def insertExchanges(coingecko_id, name, year_established, country, description, exchange_url, image_url, has_trading_incentive, trust_score, trust_score_rank, trade_volume_24h_btc, trade_volume_24h_btc_normalized):
-    insert_stmt = "INSERT IGNORE INTO crypto_exchange (coingecko_id, name, year_established, country, description, exchange_url, image_url, has_trading_incentive, trust_score, trust_score_rank, trade_volume_24h_btc, trade_volume_24h_btc_normalized) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO crypto_exchange (coingecko_id, name, year_established, country, description, exchange_url, image_url, has_trading_incentive, trust_score, trust_score_rank, trade_volume_24h_btc, trade_volume_24h_btc_normalized) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (coingecko_id, name, year_established, country, description, exchange_url, image_url, has_trading_incentive, trust_score, trust_score_rank, trade_volume_24h_btc, trade_volume_24h_btc_normalized)
     cursor.execute(insert_stmt, data)
     connection.commit()

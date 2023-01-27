@@ -10,6 +10,7 @@ import alpaca_trade_api as tradeapi
 # from alpaca.data.timeframe import TimeFrame
 # from alpaca.data import CryptoHistoricalDataClient, StockHistoricalDataClient
 import pytz
+import math
 import datetime
 
 # Load dotEnv
@@ -17,7 +18,7 @@ load_dotenv()
 
 # ct stores current time
 ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-today = datetime.datetime.now() - datetime.timedelta(days=3) 
+today = datetime.datetime.now() - datetime.timedelta(days=16) 
 # today = datetime.datetime.now()
 # today = today.strftime("%Y-%m-%d")
 today = today.strftime("%Y-%m-%d")
@@ -29,7 +30,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -52,6 +54,7 @@ strategy_id = ''
 alpacaStocks = []
 alpacaCrypto = []
 oandaForex = []
+limit_price = 0
 
 date_format = "%Y-%m-%d %H:%M:%S"
 start_minute_bar = datetime.datetime.strptime(f"{today} 09:30:00", date_format).replace(tzinfo=pytz.UTC)
@@ -93,7 +96,7 @@ print(alpacaStocks)
 print(alpacaCrypto)
 print(oandaForex)
 
-def getOpeningRange(symbols):
+def getStockOpeningRange(symbols):
     bar_iter = stock_api.get_bars_iter(symbols, tradeapi.TimeFrame.Minute, today, adjustment='raw')
     # print(bar_iter)
     
@@ -137,8 +140,8 @@ def getOpeningRange(symbols):
             if symbol in symbols:
                 if symbol != prevSymbol:
                         prevSymbol = symbol
-                        print(opening_high, opening_low, opening_range)
-                        print(f"{ct}: Processing bars for stock {symbol} from {date} to {today}")
+                        # print(opening_high, opening_low, opening_range)
+                        # print(f"{ct}: Processing bars for stock {symbol} from {date} to {today}")
                         opening_range_bars = []
                         after_opening_range_breakout = []
                         opening_high = close
@@ -150,13 +153,16 @@ def getOpeningRange(symbols):
                     opening_range_bars.append(bar)
                     # print(opening_range_bars)
                 elif (date >= end_minute_bar):
-                    # print(symbol, date, close, opening_high)
+                    # print(symbol, date, close, opening_high, math.isclose(close + .1, opening_high))
                     after_opening_range_bars.append(bar)
-                    if close > opening_high:
-                        after_opening_range_breakout.append(bar)
+                    # if math.isclose(close, opening_high, abs_tol=9):
+                    if round(close, 1) > round(opening_high, 2):
                         print('Breakout: ', symbol, date, close, opening_high)
+                        after_opening_range_breakout.append(bar)
                 
-                # print(after_opening_range_breakout)
+                if after_opening_range_breakout:
+                    limit_price = after_opening_range_breakout[0]["close"]
+                    print(limit_price)
                 
     
         # print(opening_high, opening_low, opening_range)
@@ -164,4 +170,6 @@ def getOpeningRange(symbols):
         
     
 
-getOpeningRange(alpacaStocks)
+getStockOpeningRange(alpacaStocks)
+# getCryptoOpeningRange(alpacaCrypto)
+# getForexOpeningRange(oandaForex)

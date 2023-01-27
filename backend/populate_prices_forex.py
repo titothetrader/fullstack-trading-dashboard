@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from mysql.connector import Error
 import mysql.connector
 import datetime
+import pytz
 import requests
 
 # Load dotEnv
@@ -23,7 +24,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -48,7 +50,7 @@ for row in records:
 
 def insertForexPrices(pair, date, high, open, low, close, volume, vwap, alltime_high, alltime_low):
     forex_id = forex_dict[pair]
-    insert_stmt = "INSERT IGNORE INTO forex_price (forex_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO forex_price (forex_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (forex_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low)
     cursor.execute(insert_stmt, data)
     connection.commit()
@@ -79,7 +81,8 @@ def getOandaInfo(symbol):
     alltime_high = 0
     alltime_low = 10000000000000
     for bar in oandaAsset["candles"]:
-        date = bar["time"]
+        # print(bar["time"])
+        date = datetime.datetime.strptime(bar["time"], "%Y-%m-%dT%H:%M:%S.000000000Z").replace(tzinfo=pytz.UTC)
         high = float(bar["mid"]["h"])
         open = float(bar["mid"]["o"])
         low = float(bar["mid"]["l"])

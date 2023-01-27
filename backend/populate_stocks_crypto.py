@@ -20,7 +20,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -54,14 +55,14 @@ existingCryptos = [row['symbol'] for row in records]
 
         
 def insertStock(symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable):
-    insert_stmt = "INSERT IGNORE INTO stock (symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO stock (symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (symbol, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable)
     # print(symbol, name, exchange, status, tradable)
     cursor.execute(insert_stmt, data)
     connection.commit()
     
 def insertCrypto(symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable):
-    insert_stmt = "INSERT IGNORE INTO crypto_trade (symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO crypto_trade (symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (symbol, symbol_a, symbol_b, name, exchange, category, status, tradable, marginable, maintenance_margin_requirement, shortable, easy_to_borrow, fractionable)
     # print(symbol, name, exchange, status, tradable)
     cursor.execute(insert_stmt, data)

@@ -4,6 +4,7 @@ from mysql.connector import Error
 import mysql.connector
 import alpaca_trade_api as tradeapi
 import requests
+import pytz
 import datetime
 
 # ct stores current time
@@ -21,7 +22,8 @@ host=os.getenv("HOST"),
 database=os.getenv("DATABASE"),
 user=os.getenv("DB_USER"),
 password=os.getenv("PASSWORD"),
-ssl_ca=os.getenv("SSL_CERT")
+ssl_ca=os.getenv("SSL_CERT"),
+autocommit=True
 )
 try:
     if connection.is_connected():
@@ -51,7 +53,7 @@ for row in records:
     
 def insertPrices(symbol, date, high, open, low, close, volume, vwap, alltime_high, alltime_low):
     crypto_id = crypto_dict[symbol]
-    insert_stmt = "INSERT IGNORE INTO crypto_price (crypto_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insert_stmt = "REPLACE INTO crypto_price (crypto_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     data = (crypto_id, date, high, open, low, close, volume, vwap, alltime_high, alltime_low)
     cursor.execute(insert_stmt, data)
     connection.commit()
@@ -112,7 +114,7 @@ def get_stocks_bars(symbols):
     
         for value in barsData[keys]:
             symbol = keys
-            date = value["t"]
+            date = datetime.datetime.strptime(value["t"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.UTC)
             high = value["h"]
             open = value["o"]
             low = value["l"]
