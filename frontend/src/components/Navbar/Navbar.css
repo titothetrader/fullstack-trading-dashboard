@@ -2,6 +2,7 @@
 
 @layer components {
     .nav-bar {
-        @apply text-white h-24 pt-8 text-xl underline;
+        @apply text-white h-screen pt-8 text-xl lg:w-2/12;
+        background-color: #192746;
     }
 }

@@ -11,7 +11,9 @@ import pytz
 import datetime
 
 # ct stores current time
+market_timezone = pytz.timezone('America/New_York')
 ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# today = datetime.datetime.now() - datetime.timedelta(days=0)
 today = datetime.datetime.now() - datetime.timedelta(days=1)
 today = today.strftime("%Y-%m-%d")
 # print(today)
@@ -48,7 +50,7 @@ symbols = []
 stock_dict = {}
 
 # DB FUNCTIONS - get all symbols
-sql = "SELECT DISTINCT * from stock ORDER BY symbol DESC"
+sql = "SELECT DISTINCT * from stock ORDER BY symbol ASC"
 
 # USE BELOW FOR EXISTING STOCKS BUT ARE MISSING PRICES
 # sql = "SELECT DISTINCT symbol, id FROM stock WHERE id NOT IN (select distinct stock_id from stock_price) ORDER BY symbol DESC"
@@ -78,7 +80,7 @@ def get_stocks_bars(symbols):
                  )
 
     bars = stock_client.get_stock_bars(request_params)
-    print(bars)
+    # print(bars)
     
     bar_iter = api.get_bars_iter(symbols, tradeapi.TimeFrame.Day, "2022-07-01", today, adjustment='raw')
     prevSymbol = ''

@@ -9,9 +9,7 @@ function App() {
 
   return (
     <div className="text-center">
-      <header className="">
-        <Navbar />
-      </header>
+      <Navbar />
       <div>
         <Routes>
           <Route path='/' element={<Home />} />

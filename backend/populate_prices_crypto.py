@@ -9,7 +9,7 @@ import datetime
 
 # ct stores current time
 ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-today = datetime.datetime.now() - datetime.timedelta(days=1)
+today = datetime.datetime.now() - datetime.timedelta(days=0)
 today = today.strftime("%Y-%m-%d")
 # print(today)
 
@@ -60,8 +60,8 @@ def insertPrices(symbol, date, high, open, low, close, volume, vwap, alltime_hig
     
 #######
 
-# Connect to Oanda API
-def getCryptoInfo(symbols, timeframe, next_page_token = None):
+# Connect to Alpaca API
+def getCryptoBars(symbols, timeframe, next_page_token = None):
     symbolList = ""
     for element in symbols:
         symbolList += element + ","
@@ -89,16 +89,16 @@ def getCryptoInfo(symbols, timeframe, next_page_token = None):
     return cryptoAsset
     
     
-# ITERATE BARS OF MANY STOCK DATA
-def get_stocks_bars(symbols):
+# ITERATE BARS OF MANY CRYPTO DATA
+def get_crypto_bars(symbols):
     timeframe = '1Day'
     barsData = {}
-    cryptoBars = getCryptoInfo(symbols,timeframe)
+    cryptoBars = getCryptoBars(symbols,timeframe)
     barsData = cryptoBars["bars"]
     next_page_token = cryptoBars["next_page_token"]
     # print(next_page_token)
     while next_page_token != None:
-        nextBars = getCryptoInfo(symbols,timeframe, next_page_token)
+        nextBars = getCryptoBars(symbols,timeframe, next_page_token)
         nextBarsData = nextBars["bars"]
         barsData.update(nextBarsData)
         next_page_token = nextBars["next_page_token"]     
@@ -142,4 +142,4 @@ for i in range(0, len(symbols), chunk_size):
     # print(i+chunk_size)
     symbol_chunk = symbols[i:i+chunk_size]
     # print(symbol_chunk)
-    get_stocks_bars(symbol_chunk)
+    get_crypto_bars(symbol_chunk)
