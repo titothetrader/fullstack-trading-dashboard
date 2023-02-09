@@ -42,7 +42,7 @@ const Stocks = () => {
       }
       {!isFetching && stocks?.length > 0 &&
         <table className="text-lg rounded-2xl mx-auto">
-          {console.log(stocks)}
+          {/* {console.log(stocks)} */}
           <thead>
           <tr>
             <th>ID</th>

@@ -2,7 +2,17 @@
 
 @layer components {
     .nav-bar {
-        @apply text-white h-screen pt-8 text-xl lg:w-2/12;
+        @apply text-white h-screen pt-8 md:text-base lg:text-xl w-2/12 md:text-right;
         background-color: #192746;
+        min-width: 5000 !important;
+    }
+    li {
+        @apply h-14 md:py-3 md:pr-2 md:h-auto lg:p-5 2xl:pr-10;
+    }
+    li:hover {
+        @apply bg-cyan-600;
+    }
+    .selected {
+        @apply bg-slate-900;
     }
 }

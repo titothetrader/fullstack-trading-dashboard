@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 
-import { Navbar } from './components';
+import { MainLayout, Navbar } from './components';
 import { Home, Stocks, StockDetails, Crypto, CryptoDetails, Coins, CoinDetails, Exchanges, ExchangeDetails, Commodities, Forex, ForexDetails, Strategies, StrategyDetails } from './pages'
 
 function App() {
-
-
   return (
     <div className="text-center">
       <Navbar />
